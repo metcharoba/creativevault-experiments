@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUPERFIZZ — the bureau of loud soft drinks</title>
+<meta name="description" content="A fictional research bureau for soft drinks that refuse to be quiet. A bright, designed-pop reference-first experiment.">
+<style>
+  @font-face{font-family:"Bric";src:url("assets/fonts/Bricolage-500.woff2") format("woff2");font-weight:500;font-display:swap;}
+  @font-face{font-family:"Bric";src:url("assets/fonts/Bricolage-700.woff2") format("woff2");font-weight:700;font-display:swap;}
+  @font-face{font-family:"Bric";src:url("assets/fonts/Bricolage-800.woff2") format("woff2");font-weight:800;font-display:swap;}
+  @font-face{font-family:"Shrik";src:url("assets/fonts/Shrikhand-400.woff2") format("woff2");font-weight:400;font-display:swap;}
+
+  :root{
+    --cream:#fff0c9; --cream2:#ffe39a;
+    --tang:#ff5a1f; --cherry:#ff2d6b;
+    --lime:#8ec90a; --grape:#7b3ff2; --blue:#159bff; --yellow:#ffce17;
+    --ink:#26160a; --ink2:#3a230f;
+    --disp:"Shrik",Georgia,serif;
+    --grot:"Bric","Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,monospace;
+    --burst:polygon(50.0% 0.0%,57.2% 13.7%,69.1% 3.8%,70.6% 19.2%,85.4% 14.6%,80.8% 29.4%,96.2% 30.9%,86.3% 42.8%,100.0% 50.0%,86.3% 57.2%,96.2% 69.1%,80.8% 70.6%,85.4% 85.4%,70.6% 80.8%,69.1% 96.2%,57.2% 86.3%,50.0% 100.0%,42.8% 86.3%,30.9% 96.2%,29.4% 80.8%,14.6% 85.4%,19.2% 70.6%,3.8% 69.1%,13.7% 57.2%,0.0% 50.0%,13.7% 42.8%,3.8% 30.9%,19.2% 29.4%,14.6% 14.6%,29.4% 19.2%,30.9% 3.8%,42.8% 13.7%);
+    --ribbon:polygon(0 0,100% 0,93% 50%,100% 100%,0 100%,7% 50%);
+    --fold:polygon(0 0,100% 0,100% 82%,82% 100%,0 100%);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--grot);font-weight:500;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  ::selection{background:var(--ink);color:var(--yellow);}
+  h1,h2,h3,p{margin:0;}
+  a{color:inherit;}
+
+  /* print grain so the bright flats aren't dead-flat digital */
+  .grain{position:fixed;inset:-20px;z-index:90;pointer-events:none;opacity:.16;mix-blend-mode:multiply;}
+
+  /* ---------- patterns (angular, not dots) ---------- */
+  .pat-zig{height:26px;width:100%;
+    background:
+      linear-gradient(135deg,var(--c,#000) 25%,transparent 25%) -13px 0/26px 26px,
+      linear-gradient(225deg,var(--c,#000) 25%,transparent 25%) -13px 0/26px 26px;}
+  .pat-stripe{background-image:repeating-linear-gradient(45deg,var(--c,#000) 0 12px,transparent 12px 28px);}
+  .pat-check{background-image:
+    conic-gradient(var(--c,#000) 90deg,transparent 0 180deg,var(--c,#000) 0 270deg,transparent 0);
+    background-size:26px 26px;}
+
+  /* ---------- sticker seal (spiky, no circle) ---------- */
+  .seal{clip-path:var(--burst);display:grid;place-items:center;text-align:center;
+    font-family:var(--grot);font-weight:800;line-height:.92;color:var(--ink);
+    text-transform:uppercase;letter-spacing:.01em;}
+  .seal small{display:block;font-family:var(--mono);font-weight:400;letter-spacing:.04em;}
+
+  /* ---------- generic loud block ---------- */
+  .block{position:relative;padding:clamp(40px,7vw,108px) clamp(20px,5vw,86px);overflow:hidden;}
+  .seam{position:absolute;left:0;right:0;z-index:6;pointer-events:none;}
+
+  /* ===================== TICKER ===================== */
+  .ticker{background:var(--ink);color:var(--yellow);overflow:hidden;
+    border-bottom:5px solid var(--ink);white-space:nowrap;}
+  .ticker .run{display:inline-flex;gap:0;will-change:transform;animation:scroll 26s linear infinite;}
+  .ticker b{display:inline-flex;align-items:center;gap:18px;padding:11px 0;
+    font-family:var(--mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;}
+  .ticker b::after{content:"★";color:var(--cherry);margin:0 22px;}
+  @keyframes scroll{to{transform:translateX(-50%);}}
+
+  /* ===================== HERO ===================== */
+  .hero{background:var(--tang);color:var(--cream);
+    display:grid;grid-template-columns:repeat(12,1fr);gap:8px;
+    padding-bottom:clamp(60px,9vw,130px);}
+  .hero .kick{grid-column:1/8;font-family:var(--mono);font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--cream);opacity:.9;margin-bottom:6px;}
+  .hero .logo{grid-column:1/9;align-self:start;position:relative;z-index:4;}
+  .hero .logo .l1{font-family:var(--disp);font-size:clamp(4.6rem,16vw,15rem);line-height:.8;
+    color:var(--cream);text-shadow:7px 7px 0 var(--ink);}
+  .hero .logo .l2{font-family:var(--disp);font-size:clamp(4.6rem,16vw,15rem);line-height:.78;
+    color:var(--yellow);text-shadow:7px 7px 0 var(--ink);margin-left:.9em;}
+  .hero .sub{grid-column:1/7;margin-top:18px;font-weight:700;font-size:clamp(1.05rem,1.8vw,1.5rem);
+    line-height:1.25;max-width:24ch;color:var(--cream);}
+  .hero .sub u{text-decoration-thickness:3px;text-underline-offset:4px;text-decoration-color:var(--yellow);}
+  .hero .cta{grid-column:1/6;margin-top:26px;display:inline-flex;align-items:center;gap:0;
+    align-self:start;justify-self:start;}
+  .chev{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--yellow);
+    font-family:var(--grot);font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+    font-size:clamp(1rem,1.5vw,1.25rem);padding:16px 30px 16px 22px;text-decoration:none;
+    clip-path:polygon(0 0,100% 0,92% 50%,100% 100%,0 100%);transition:transform .15s ease;}
+  .chev:hover{transform:translateX(6px) rotate(-1deg);}
+  .chev .a{font-size:1.3em;}
+
+  .hero .readout{grid-column:1/6;margin-top:28px;align-self:end;font-family:var(--mono);
+    font-size:11.5px;line-height:1.9;letter-spacing:.04em;color:var(--cream);
+    border-top:2px dashed rgba(255,240,201,.5);padding-top:10px;max-width:30ch;}
+  .hero .readout b{color:var(--yellow);}
+
+  .hero .stage{grid-column:8/13;grid-row:1/6;position:relative;align-self:stretch;min-height:clamp(360px,42vw,640px);}
+  .bottle{position:absolute;right:-2%;top:4%;width:min(78%,360px);transform:rotate(7deg);
+    filter:drop-shadow(12px 16px 0 rgba(38,22,10,.28));}
+  .bottle .label-txt{font-family:var(--disp);}
+  .seal-a{position:absolute;width:clamp(108px,13vw,168px);aspect-ratio:1;left:-6%;top:6%;
+    background:var(--yellow);transform:rotate(-12deg);font-size:clamp(.8rem,1.4vw,1.05rem);z-index:5;}
+  .seal-b{position:absolute;width:clamp(86px,10vw,128px);aspect-ratio:1;right:2%;bottom:6%;
+    background:var(--lime);transform:rotate(9deg);font-size:.82rem;z-index:5;}
+  .bubble{position:absolute;border-radius:50%;background:rgba(255,240,201,.5);
+    border:2px solid rgba(255,240,201,.85);animation:rise 6s ease-in infinite;}
+
+  .hero-seam{bottom:0;height:26px;--c:var(--ink);}
+
+  /* ===================== FLAVORS ===================== */
+  .flavors{background:var(--cream);color:var(--ink);}
+  .flavors .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+    flex-wrap:wrap;margin-bottom:clamp(28px,5vw,64px);}
+  .flavors .head h2{font-family:var(--disp);font-size:clamp(2.4rem,6.5vw,6rem);line-height:.86;
+    color:var(--grape);max-width:11ch;}
+  .flavors .head .meta{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    text-align:right;line-height:1.8;}
+
+  .tags{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,2vw,26px);align-items:start;}
+  .tag{position:relative;padding:22px 22px 20px;color:var(--ink);border:3px solid var(--ink);
+    box-shadow:9px 11px 0 var(--ink);transition:transform .15s ease, box-shadow .15s ease;}
+  .tag:hover{transform:translate(-2px,-3px) rotate(-1deg);box-shadow:13px 16px 0 var(--ink);}
+  .tag .name{font-family:var(--disp);font-size:clamp(1.5rem,2.6vw,2.3rem);line-height:.9;}
+  .tag .data{margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.03em;line-height:1.8;}
+  .tag .data b{background:var(--ink);color:var(--cream);padding:0 5px;}
+  .tag .note{margin-top:12px;font-weight:700;font-size:13.5px;line-height:1.3;}
+  .tag .pip{position:absolute;top:-16px;right:14px;width:46px;aspect-ratio:1;background:var(--ink);
+    color:var(--cream);display:grid;place-items:center;font-family:var(--mono);font-size:11px;
+    font-weight:700;transform:rotate(8deg);clip-path:var(--fold);}
+  /* non-uniform placement / sizes / rotations / clashing colours */
+  .t1{grid-column:1/6;background:var(--tang);transform:rotate(-1.4deg);}
+  .t2{grid-column:6/11;background:var(--blue);color:var(--cream);transform:rotate(1deg);margin-top:34px;}
+  .t2 .data b{background:var(--cream);color:var(--blue);}
+  .t3{grid-column:9/13;background:var(--yellow);transform:rotate(2deg);}
+  .t4{grid-column:2/7;background:var(--lime);transform:rotate(1.2deg);margin-top:8px;clip-path:var(--fold);}
+  .t5{grid-column:7/12;background:var(--cherry);color:var(--cream);transform:rotate(-1.6deg);margin-top:-6px;}
+  .t5 .data b{background:var(--cream);color:var(--cherry);}
+  .t6{grid-column:1/5;background:var(--grape);color:var(--cream);transform:rotate(-2deg);margin-top:18px;}
+  .t6 .data b{background:var(--yellow);color:var(--ink);}
+  .t7{grid-column:5/11;background:var(--cream2);transform:rotate(.8deg);margin-top:6px;
+    border-style:dashed;}
+
+  .flav-seam{position:relative;height:26px;margin-top:clamp(34px,5vw,70px);--c:var(--grape);}
+
+  /* ===================== FIZZ-O-METER ===================== */
+  .meter{background:var(--grape);color:var(--cream);}
+  .meter h2{font-family:var(--disp);font-size:clamp(2.2rem,6vw,5.4rem);line-height:.86;color:var(--yellow);
+    margin-bottom:8px;}
+  .meter .lead{font-weight:700;max-width:40ch;margin-bottom:clamp(30px,5vw,56px);font-size:clamp(1rem,1.4vw,1.2rem);}
+  .chart{display:grid;grid-template-columns:repeat(7,1fr);gap:clamp(10px,1.6vw,22px);align-items:end;
+    height:clamp(220px,30vw,360px);border-bottom:4px solid var(--cream);padding-bottom:0;}
+  .bar{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;}
+  .bar .col{width:100%;border:3px solid var(--ink);border-bottom:none;}
+  .bar .val{font-family:var(--disp);font-size:clamp(1.1rem,2.2vw,2rem);margin-bottom:6px;color:var(--cream);}
+  .bar .lab{margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+    text-align:center;line-height:1.3;min-height:3.4em;}
+  .meter .stamp{position:absolute;right:clamp(16px,5vw,70px);top:clamp(20px,4vw,48px);
+    width:clamp(110px,12vw,150px);aspect-ratio:1;background:var(--cherry);color:var(--cream);
+    transform:rotate(11deg);font-size:.82rem;z-index:5;}
+
+  /* ===================== HOW TO ===================== */
+  .howto{background:var(--yellow);color:var(--ink);}
+  .howto h2{font-family:var(--disp);font-size:clamp(2.2rem,6vw,5.2rem);line-height:.86;color:var(--tang);
+    max-width:13ch;margin-bottom:clamp(28px,4vw,52px);}
+  .steps{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2.4vw,30px);align-items:start;}
+  .step{position:relative;border:3px solid var(--ink);background:var(--cream);padding:22px;
+    box-shadow:8px 10px 0 var(--ink);}
+  .step .no{font-family:var(--disp);font-size:clamp(2.4rem,5vw,4rem);line-height:.8;color:var(--tang);}
+  .step h3{font-family:var(--grot);font-weight:800;text-transform:uppercase;font-size:1.1rem;margin:8px 0 6px;letter-spacing:.01em;}
+  .step p{font-weight:500;font-size:14px;line-height:1.45;}
+  .s1{grid-column:1/5;transform:rotate(-1.2deg);}
+  .s2{grid-column:5/9;margin-top:42px;transform:rotate(.8deg);background:var(--blue);color:var(--cream);}
+  .s2 .no{color:var(--yellow);}
+  .s3{grid-column:9/13;transform:rotate(1.4deg);background:var(--cherry);color:var(--cream);}
+  .s3 .no{color:var(--yellow);}
+  .arrow{position:absolute;font-family:var(--grot);font-weight:800;font-size:2rem;color:var(--ink);z-index:6;}
+
+  /* ===================== VISIT ===================== */
+  .visit{background:var(--blue);color:var(--cream);}
+  .visit .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,3vw,40px);align-items:center;}
+  .visit h2{grid-column:1/7;font-family:var(--disp);font-size:clamp(2.4rem,6vw,5.6rem);line-height:.84;color:var(--yellow);}
+  .visit .info{grid-column:7/13;display:grid;grid-template-columns:repeat(2,1fr);gap:18px 24px;}
+  .visit .info dt{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;}
+  .visit .info dd{margin:4px 0 0;font-weight:800;font-size:clamp(1.05rem,1.7vw,1.4rem);line-height:1.15;}
+  .bigbanner{grid-column:1/13;margin-top:clamp(26px,4vw,54px);background:var(--yellow);color:var(--ink);
+    font-family:var(--disp);font-size:clamp(1.5rem,4.4vw,3.6rem);line-height:1;text-align:center;
+    padding:20px 26px;clip-path:var(--ribbon);}
+
+  /* ===================== FOOTER ===================== */
+  .foot{background:var(--cherry);color:var(--cream);}
+  .foot .top{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .foot .lg{font-family:var(--disp);font-size:clamp(2.4rem,7vw,6rem);line-height:.8;color:var(--cream);
+    text-shadow:5px 5px 0 var(--ink);}
+  .foot .seal-end{width:clamp(108px,12vw,150px);aspect-ratio:1;background:var(--ink);color:var(--yellow);
+    transform:rotate(-8deg);font-size:.84rem;}
+  .foot .fine{margin-top:clamp(26px,4vw,48px);font-family:var(--mono);font-size:11px;line-height:1.9;
+    letter-spacing:.04em;max-width:80ch;border-top:2px dashed rgba(255,240,201,.5);padding-top:14px;}
+
+  /* load-pop for stickers + tags */
+  .pop{opacity:0;transform:scale(.6) rotate(-8deg);}
+  .pop.in{opacity:1;transform:none;transition:opacity .5s cubic-bezier(.2,1.4,.5,1),transform .5s cubic-bezier(.2,1.4,.5,1);}
+  .rise2{opacity:0;transform:translateY(22px);}
+  .rise2.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s cubic-bezier(.18,.9,.3,1);}
+
+  @keyframes rise{0%{transform:translateY(20px) scale(.8);opacity:0}30%{opacity:.9}100%{transform:translateY(-120px) scale(1.1);opacity:0}}
+  @keyframes wob{0%,100%{transform:rotate(7deg)}50%{transform:rotate(4deg)}}
+  .bottle.go{animation:wob 5s ease-in-out infinite;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:820px){
+    .hero{grid-template-columns:repeat(6,1fr);}
+    .hero .kick,.hero .logo,.hero .sub,.hero .cta,.hero .readout{grid-column:1/7;}
+    .hero .logo .l2{margin-left:.4em;}
+    .hero .stage{grid-column:1/7;grid-row:auto;min-height:360px;margin-top:18px;}
+    .tags,.steps{grid-template-columns:repeat(6,1fr);}
+    .t1,.t4,.t6{grid-column:1/4;}
+    .t2,.t3,.t5,.t7{grid-column:3/7;}
+    .t1,.t2,.t3,.t4,.t5,.t6,.t7{margin-top:0;}
+    .chart{grid-template-columns:repeat(7,1fr);height:240px;}
+    .bar .lab{font-size:8px;min-height:4em;}
+    .s1,.s2,.s3{grid-column:1/7;margin-top:0;transform:none;}
+    .visit h2,.visit .info,.bigbanner{grid-column:1/7;}
+    .tag,.step,.bottle{transform:none!important;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .ticker .run,.bottle.go,.bubble{animation:none!important;}
+    .pop,.rise2{opacity:1!important;transform:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0"/></filter>
+  </svg>
+  <div class="grain" aria-hidden="true"><svg width="100%" height="100%"><rect width="100%" height="100%" filter="url(#gr)"/></svg></div>
+
+  <!-- ticker -->
+  <div class="ticker" aria-label="news ticker">
+    <div class="run">
+      <b>Batch 09 bottled today</b><b>Extra fizz, zero clouds</b><b>Taste louder</b><b>4.2 volumes of nonsense</b><b>Now in seven loud flavours</b>
+      <b>Batch 09 bottled today</b><b>Extra fizz, zero clouds</b><b>Taste louder</b><b>4.2 volumes of nonsense</b><b>Now in seven loud flavours</b>
+    </div>
+  </div>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="hero block">
+      <p class="kick rise2">Bureau no.9 · est. somewhere sunny · open all summer</p>
+      <h1 class="logo rise2"><span class="l1">SUPER</span><span class="l2">FIZZ</span></h1>
+      <p class="sub rise2">A research bureau for soft drinks that flatly <u>refuse to be quiet.</u></p>
+      <a class="chev rise2" href="#flavours"><span class="a">↓</span> Taste the batch</a>
+      <p class="readout rise2">Today's batch — <b>CO₂ 4.2 vol</b> · pH 3.1 · sugar: a frankly silly amount ·
+        colour reading: <b>LOUD</b> · approved by nobody qualified.</p>
+
+      <div class="stage">
+        <!-- self-made geometric bottle -->
+        <svg class="bottle go" viewBox="0 0 200 380" role="img" aria-label="A loud soda bottle">
+          <rect x="76" y="6" width="48" height="20" rx="3" fill="#26160a"/>
+          <rect x="80" y="24" width="40" height="34" fill="#ffce17" stroke="#26160a" stroke-width="3"/>
+          <path d="M58 92 C58 70 80 64 80 58 L120 58 C120 64 142 70 142 92 L142 340 C142 360 128 372 100 372 C72 372 58 360 58 340 Z"
+                fill="#ff2d6b" stroke="#26160a" stroke-width="4"/>
+          <rect x="66" y="100" width="18" height="220" rx="9" fill="#ffffff" opacity=".26"/>
+          <rect x="50" y="176" width="100" height="138" fill="#fff0c9" stroke="#26160a" stroke-width="4"/>
+          <rect x="50" y="176" width="100" height="20" fill="#159bff"/>
+          <rect x="50" y="296" width="100" height="18" fill="#8ec90a"/>
+          <text x="100" y="236" text-anchor="middle" class="label-txt" font-size="30" fill="#26160a">FIZZ</text>
+          <text x="100" y="268" text-anchor="middle" font-family="monospace" font-size="11" fill="#26160a" letter-spacing="1">No.09 · 4.2 vol</text>
+          <g transform="translate(128,150)"><path d="M0 -22 5 -7 21 -7 8 3 13 19 0 9 -13 19 -8 3 -21 -7 -5 -7 Z" fill="#ffce17" stroke="#26160a" stroke-width="2"/></g>
+        </svg>
+        <div class="seal seal-a pop" data-d="0">New!<small>batch 09</small></div>
+        <div class="seal seal-b pop" data-d="1">4.2<small>volumes</small></div>
+        <span class="bubble" style="width:16px;height:16px;left:12%;bottom:8%;animation-delay:0s"></span>
+        <span class="bubble" style="width:11px;height:11px;left:30%;bottom:2%;animation-delay:1.4s"></span>
+        <span class="bubble" style="width:20px;height:20px;left:48%;bottom:6%;animation-delay:.7s"></span>
+        <span class="bubble" style="width:9px;height:9px;left:62%;bottom:3%;animation-delay:2.1s"></span>
+      </div>
+      <div class="seam hero-seam pat-zig"></div>
+    </section>
+
+    <!-- ============ FLAVORS ============ -->
+    <section class="flavors block" id="flavours">
+      <div class="head">
+        <h2 class="rise2">Seven loud flavours</h2>
+        <p class="meta rise2">range no.09<br>two ingredients too many<br>none of them subtle</p>
+      </div>
+      <div class="tags">
+        <article class="tag t1 pop" data-d="0"><span class="pip">09</span>
+          <h3 class="name">Tangerine Riot</h3>
+          <p class="data"><b>CO₂ 4.4</b> · pH 3.0 · sugar HIGH</p>
+          <p class="note">Smells like a marching band made of oranges.</p></article>
+        <article class="tag t2 pop" data-d="1"><span class="pip">04</span>
+          <h3 class="name">Blue Racket</h3>
+          <p class="data"><b>CO₂ 4.1</b> · pH 3.3 · colour ILLEGAL</p>
+          <p class="note">A blue that has never occurred in fruit.</p></article>
+        <article class="tag t3 pop" data-d="2"><span class="pip">02</span>
+          <h3 class="name">Yellow Buzz</h3>
+          <p class="data"><b>CO₂ 4.6</b> · pH 2.9 · zing MAX</p>
+          <p class="note">Wakes you up before you open it.</p></article>
+        <article class="tag t4 pop" data-d="3"><span class="pip">05</span>
+          <h3 class="name">Lime Alarm</h3>
+          <p class="data"><b>CO₂ 4.3</b> · pH 3.1 · sour LOUD</p>
+          <p class="note">Sets off every taste bud at once.</p></article>
+        <article class="tag t5 pop" data-d="4"><span class="pip">01</span>
+          <h3 class="name">Cherry Siren</h3>
+          <p class="data"><b>CO₂ 4.0</b> · pH 3.4 · red EMERGENCY</p>
+          <p class="note">Heard from two rooms away.</p></article>
+        <article class="tag t6 pop" data-d="5"><span class="pip">07</span>
+          <h3 class="name">Grape Static</h3>
+          <p class="data"><b>CO₂ 4.2</b> · pH 3.2 · fizz CRACKLE</p>
+          <p class="note">Tastes faintly of an old TV.</p></article>
+        <article class="tag t7 pop" data-d="6"><span class="pip">03</span>
+          <h3 class="name">Peach Feedback</h3>
+          <p class="data"><b>CO₂ 3.9</b> · pH 3.5 · sweet ECHO</p>
+          <p class="note">The flavour keeps going after you stop.</p></article>
+      </div>
+      <div class="flav-seam pat-zig"></div>
+    </section>
+
+    <!-- ============ FIZZ-O-METER ============ -->
+    <section class="meter block">
+      <div class="seal stamp pop" data-d="0">Measured<small>by hand</small></div>
+      <h2 class="rise2">Fizz-o-meter</h2>
+      <p class="lead rise2">Carbonation per flavour, in volumes, measured by a person holding a ruler
+        very close to an exploding bottle. Margin of error: enormous.</p>
+      <div class="chart rise2">
+        <div class="bar"><span class="val">4.4</span><span class="col" style="height:88%;background:var(--tang)"></span><span class="lab">Tangerine Riot</span></div>
+        <div class="bar"><span class="val">4.1</span><span class="col" style="height:78%;background:var(--blue)"></span><span class="lab">Blue Racket</span></div>
+        <div class="bar"><span class="val">4.6</span><span class="col" style="height:96%;background:var(--yellow)"></span><span class="lab">Yellow Buzz</span></div>
+        <div class="bar"><span class="val">4.3</span><span class="col" style="height:84%;background:var(--lime)"></span><span class="lab">Lime Alarm</span></div>
+        <div class="bar"><span class="val">4.0</span><span class="col" style="height:72%;background:var(--cherry)"></span><span class="lab">Cherry Siren</span></div>
+        <div class="bar"><span class="val">4.2</span><span class="col" style="height:80%;background:var(--cream)"></span><span class="lab">Grape Static</span></div>
+        <div class="bar"><span class="val">3.9</span><span class="col" style="height:66%;background:var(--cream2)"></span><span class="lab">Peach Feedback</span></div>
+      </div>
+    </section>
+
+    <!-- ============ HOW TO ============ -->
+    <section class="howto block">
+      <h2 class="rise2">How the nonsense gets made</h2>
+      <div class="steps">
+        <article class="step s1 rise2"><div class="no">01</div><h3>Pick a loud fruit</h3>
+          <p>Reject anything that whispers. If it doesn't shout across the room, it goes back in the box.</p></article>
+        <span class="arrow" style="left:31.5%;top:34%">➜</span>
+        <article class="step s2 rise2"><div class="no">02</div><h3>Add too many bubbles</h3>
+          <p>Pump in carbonation until the bottle becomes slightly nervous, then add a bit more.</p></article>
+        <span class="arrow" style="left:64.5%;top:50%">➜</span>
+        <article class="step s3 rise2"><div class="no">03</div><h3>Bottle before it calms down</h3>
+          <p>Cap it while it's still arguing. A quiet soda is a failed soda.</p></article>
+      </div>
+    </section>
+
+    <!-- ============ VISIT ============ -->
+    <section class="visit block">
+      <div class="grid">
+        <h2 class="rise2">Come taste a batch</h2>
+        <dl class="info rise2">
+          <div><dt>When</dt><dd>Thu–Sun · noon till the fridge is empty</dd></div>
+          <div><dt>Where</dt><dd>The Fizz Bureau, 9 Bright Street</dd></div>
+          <div><dt>Entry</dt><dd>Free · one sample per loud opinion</dd></div>
+          <div><dt>Bring</dt><dd>A friend who can't sit still</dd></div>
+        </dl>
+        <div class="bigbanner rise2">Walk in · taste loud · leave buzzing</div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="foot block">
+      <div class="top">
+        <div class="lg rise2">SUPERFIZZ</div>
+        <div class="seal seal-end pop" data-d="0">End<small>of batch</small></div>
+      </div>
+      <p class="fine rise2">SUPERFIZZ and its Bureau of Loud Soft Drinks are entirely fictional — a layout
+        exercise, not a product. No soda exists, nothing is for sale, and all bubbles are simulated. Set in
+        Bricolage Grotesque &amp; Shrikhand (OFL), self-hosted. Reference-first mimic test · v0.3.</p>
+    </footer>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const els = Array.from(document.querySelectorAll(".pop,.rise2"));
+    const reveal = (e) => {
+      const d = e.dataset.d ? parseInt(e.dataset.d,10) : 0;
+      e.style.transitionDelay = (d*55) + "ms";
+      e.classList.add("in");
+    };
+    if (reduce || !("IntersectionObserver" in window)) { els.forEach(reveal); return; }
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(e => io.observe(e));
+    requestAnimationFrame(() => els.forEach(e => { if (e.getBoundingClientRect().top < innerHeight*1.02) reveal(e); }));
+    setTimeout(() => els.forEach(e => e.classList.add("in")), 2600);
+  })();
+  </script>
+</body>
+</html>
+</content>

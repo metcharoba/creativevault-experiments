@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signal Dept.</title>
+  <style>
+    :root {
+      --ink: #11110f;
+      --paper: #f2ead2;
+      --paper-warm: #d8c9aa;
+      --red: #ef3f2d;
+      --blue: #2158ff;
+      --acid: #d7ff2f;
+      --green: #6f8b64;
+      --shadow: rgba(17, 17, 15, .84);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 720px;
+      padding: 28px 34px;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(17,17,15,.16) 0 1px, transparent 1.35px),
+        radial-gradient(circle at 68% 76%, rgba(239,63,45,.22) 0 1px, transparent 1.55px),
+        linear-gradient(90deg, transparent 0 23px, rgba(17,17,15,.07) 23px 24px),
+        var(--paper);
+      background-size: 9px 9px, 12px 12px, 96px 96px, auto;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -12% 42% -18% auto;
+      width: 36vw;
+      min-width: 420px;
+      z-index: -1;
+      background: var(--ink);
+      transform: rotate(-9deg);
+      box-shadow: 28px 0 0 var(--red), -18px 0 0 var(--blue);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, rgba(17,17,15,.035) 0 1px, transparent 1px 5px),
+        linear-gradient(160deg, transparent 0 45%, rgba(17,17,15,.16) 45% 45.4%, transparent 45.4%);
+      mix-blend-mode: multiply;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 180px 1fr 270px;
+      gap: 20px;
+      align-items: start;
+      font-size: 12px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .mark {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 9px;
+      align-items: start;
+      font-weight: 900;
+    }
+
+    .mark span:first-child {
+      height: 34px;
+      background:
+        linear-gradient(135deg, var(--blue) 0 45%, var(--acid) 45% 58%, var(--red) 58%);
+      border: 2px solid var(--ink);
+    }
+
+    nav {
+      justify-self: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      max-width: 650px;
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 8px 10px;
+      border: 2px solid var(--ink);
+      background: rgba(242,234,210,.72);
+      box-shadow: 4px 4px 0 var(--shadow);
+      font-weight: 900;
+    }
+
+    nav a:nth-child(2) {
+      transform: rotate(-3deg) translateY(8px);
+      background: var(--acid);
+    }
+
+    nav a:nth-child(3) {
+      transform: rotate(2deg);
+      color: var(--paper);
+      background: var(--blue);
+    }
+
+    nav a:nth-child(4) {
+      transform: translateY(13px);
+      border-style: dashed;
+    }
+
+    nav a:nth-child(5) {
+      transform: rotate(-1deg);
+      background: var(--red);
+      color: var(--paper);
+    }
+
+    .meta {
+      justify-self: end;
+      max-width: 245px;
+      padding: 9px 10px;
+      color: var(--paper);
+      background: var(--ink);
+      border-left: 10px solid var(--red);
+      font-weight: 800;
+    }
+
+    .title-stack {
+      position: absolute;
+      left: clamp(26px, 4vw, 62px);
+      top: 142px;
+      z-index: 2;
+      width: min(920px, 68vw);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      position: relative;
+      margin: 0;
+      font-family: Impact, "Arial Black", "Helvetica Neue", Arial, sans-serif;
+      font-size: clamp(108px, 15.8vw, 232px);
+      line-height: .75;
+      font-weight: 900;
+      letter-spacing: -5px;
+      color: var(--ink);
+      text-shadow: 8px 8px 0 var(--red), -8px 0 0 var(--blue);
+    }
+
+    h1 .dept {
+      display: block;
+      margin-left: clamp(96px, 17vw, 245px);
+      color: var(--paper);
+      -webkit-text-stroke: 3px var(--ink);
+      text-shadow: 7px 7px 0 var(--blue), -7px 0 0 var(--acid);
+      transform: rotate(-2deg);
+    }
+
+    .headline {
+      width: min(520px, 44vw);
+      margin: 22px 0 0 12px;
+      padding: 13px 15px;
+      color: var(--paper);
+      background: var(--ink);
+      border-top: 8px solid var(--acid);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(31px, 3.3vw, 50px);
+      line-height: .97;
+      text-transform: none;
+      box-shadow: 13px 13px 0 var(--red);
+      transform: rotate(-1.4deg);
+    }
+
+    .body-copy {
+      position: absolute;
+      left: clamp(38px, 5vw, 78px);
+      bottom: 58px;
+      z-index: 3;
+      width: 430px;
+      margin: 0;
+      padding: 17px 19px;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      box-shadow: 14px 14px 0 var(--shadow);
+      font-size: 18px;
+      line-height: 1.28;
+      font-weight: 740;
+    }
+
+    .cta {
+      position: absolute;
+      left: 526px;
+      bottom: 72px;
+      z-index: 4;
+      display: inline-grid;
+      place-items: center;
+      width: 178px;
+      height: 66px;
+      color: var(--paper);
+      background: var(--red);
+      border: 3px solid var(--ink);
+      box-shadow: 10px 10px 0 var(--blue);
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 950;
+      transform: rotate(3deg);
+    }
+
+    .poster-plane {
+      position: absolute;
+      right: clamp(28px, 5vw, 74px);
+      top: 150px;
+      z-index: 1;
+      width: min(43vw, 610px);
+      height: min(63vh, 550px);
+      min-height: 460px;
+      background:
+        radial-gradient(circle at center, var(--paper) 0 2px, transparent 2.4px),
+        linear-gradient(135deg, var(--acid) 0 18%, transparent 18% 23%, var(--paper) 23% 46%, var(--red) 46% 60%, var(--blue) 60% 76%, var(--ink) 76%);
+      background-size: 14px 14px, auto;
+      border: 4px solid var(--ink);
+      box-shadow: -18px 18px 0 var(--shadow);
+      transform: rotate(5deg);
+      overflow: hidden;
+    }
+
+    .poster-plane::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border: 3px solid var(--paper);
+      transform: rotate(-10deg);
+      mix-blend-mode: difference;
+    }
+
+    .poster-plane::after {
+      content: "IDENTITY / WEB / EDITORIAL / SYSTEMS";
+      position: absolute;
+      right: -18px;
+      bottom: 44px;
+      width: 420px;
+      padding: 10px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      font-size: 20px;
+      font-weight: 1000;
+      text-align: center;
+      transform: rotate(-8deg);
+    }
+
+    .signal-bars {
+      position: absolute;
+      right: 7vw;
+      bottom: 58px;
+      z-index: 3;
+      display: grid;
+      gap: 8px;
+      width: min(31vw, 420px);
+      transform: rotate(-2deg);
+    }
+
+    .signal-bars span {
+      height: 18px;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      box-shadow: 6px 6px 0 var(--shadow);
+    }
+
+    .signal-bars span:nth-child(1) {
+      width: 72%;
+      background: var(--acid);
+    }
+
+    .signal-bars span:nth-child(2) {
+      width: 100%;
+      background: var(--paper);
+    }
+
+    .signal-bars span:nth-child(3) {
+      width: 58%;
+      justify-self: end;
+      background: var(--blue);
+    }
+
+    .side-note {
+      position: absolute;
+      right: 34px;
+      top: 49%;
+      z-index: 4;
+      width: 150px;
+      padding: 9px;
+      color: var(--paper);
+      background: var(--ink);
+      border: 2px solid var(--paper);
+      font-size: 12px;
+      line-height: 1.14;
+      text-transform: uppercase;
+      transform: rotate(8deg);
+    }
+
+    .rule {
+      position: absolute;
+      z-index: 2;
+      height: 3px;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+
+    .r1 {
+      left: 18vw;
+      top: 118px;
+      width: 52vw;
+      transform: rotate(-6deg);
+    }
+
+    .r2 {
+      left: 42vw;
+      bottom: 185px;
+      width: 35vw;
+      background: var(--red);
+      transform: rotate(10deg);
+    }
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 18px;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        justify-self: start;
+        justify-content: flex-start;
+      }
+
+      .meta {
+        justify-self: start;
+      }
+
+      .title-stack,
+      .body-copy,
+      .cta,
+      .poster-plane,
+      .signal-bars,
+      .side-note,
+      .rule {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+      }
+
+      .title-stack {
+        width: 100%;
+        margin-top: 60px;
+      }
+
+      h1 {
+        font-size: clamp(82px, 24vw, 132px);
+      }
+
+      h1 .dept {
+        margin-left: 18vw;
+      }
+
+      .headline,
+      .body-copy {
+        width: min(100%, 520px);
+      }
+
+      .body-copy,
+      .cta,
+      .poster-plane,
+      .signal-bars,
+      .side-note {
+        margin-top: 28px;
+      }
+
+      .poster-plane {
+        width: 100%;
+        height: 430px;
+        min-height: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="hero" aria-labelledby="main-title">
+    <header class="topbar">
+      <div class="mark" aria-label="Signal Dept. mark">
+        <span></span>
+        <span>Signal Dept.<br>Graphic systems office</span>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#">About</a>
+        <a href="#">Works</a>
+        <a href="#">Experiments</a>
+        <a href="#">Writing</a>
+        <a href="#">Contact</a>
+      </nav>
+      <div class="meta">Experimental identity, web, editorial graphics, and visual systems.</div>
+    </header>
+
+    <div class="rule r1"></div>
+    <div class="rule r2"></div>
+
+    <section class="title-stack">
+      <h1 id="main-title">Signal <span class="dept">Dept.</span></h1>
+      <p class="headline">Design for ideas with signal.</p>
+    </section>
+
+    <p class="body-copy">A creative studio working across identity, web, editorial graphics, and experimental visual systems.</p>
+    <a class="cta" href="#">Enter Studio</a>
+
+    <div class="poster-plane" aria-hidden="true"></div>
+    <div class="side-note">No brand fog. No template manners. Signal before polish.</div>
+    <div class="signal-bars" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </main>
+</body>
+</html>

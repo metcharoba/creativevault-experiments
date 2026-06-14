@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiet Holdings — a viewing at The Cold Store</title>
+<meta name="description" content="A fictional viewing room laying out public-domain studies and photographs as a finding aid. A reference-first design experiment.">
+<style>
+  @font-face{font-family:"Cormorant";src:url("assets/fonts/CormorantGaramond-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap;}
+  @font-face{font-family:"Cormorant";src:url("assets/fonts/CormorantGaramond-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap;}
+  @font-face{font-family:"Cormorant";src:url("assets/fonts/CormorantGaramond-500italic.woff2") format("woff2");font-weight:500;font-style:italic;font-display:swap;}
+  @font-face{font-family:"Archivo";src:url("assets/fonts/Archivo-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:"Archivo";src:url("assets/fonts/Archivo-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap;}
+
+  :root{
+    /* "Cold Store" theme — bone paper, warm ink, one curatorial red */
+    --paper:#e8e1d1;
+    --paper-2:#ded4c0;
+    --ink:#221e17;
+    --ink-soft:#6b6253;
+    --keyline:rgba(34,30,23,.5);
+    --hair:rgba(34,30,23,.22);
+    --accent:#9c3b2c;        /* curator's red pencil */
+    --display:"Cormorant",Georgia,"Times New Roman",serif;
+    --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--sans); overflow-x:hidden;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--accent);color:var(--paper);}
+  img{max-width:100%;display:block;}
+
+  /* ---------- page-wide material (self-authored) ---------- */
+  .grain{position:fixed;inset:-30px;z-index:80;pointer-events:none;opacity:.34;mix-blend-mode:multiply;}
+  .dust{position:fixed;inset:0;z-index:79;pointer-events:none;opacity:.5;
+    background:
+      radial-gradient(circle at 14% 22%, rgba(255,255,255,.5) 0 .8px, transparent 1.4px),
+      radial-gradient(circle at 67% 8%, rgba(34,30,23,.35) 0 .7px, transparent 1.3px),
+      radial-gradient(circle at 88% 61%, rgba(255,255,255,.45) 0 .8px, transparent 1.4px),
+      radial-gradient(circle at 33% 79%, rgba(34,30,23,.3) 0 .7px, transparent 1.3px);
+    background-size:340px 340px,420px 420px,290px 290px,510px 510px;}
+  .vign{position:fixed;inset:0;z-index:1;pointer-events:none;
+    box-shadow:inset 0 0 220px rgba(60,44,22,.16);}
+  /* page-corner crop marks — frames the whole sheet as a plate */
+  .cropmarks{position:fixed;inset:18px;z-index:78;pointer-events:none;
+    background:
+      linear-gradient(var(--ink),var(--ink)) left top/16px 1px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) left top/1px 16px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) right top/16px 1px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) right top/1px 16px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) left bottom/16px 1px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) left bottom/1px 16px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) right bottom/16px 1px no-repeat,
+      linear-gradient(var(--ink),var(--ink)) right bottom/1px 16px no-repeat;
+    opacity:.55;}
+
+  .store{position:relative;z-index:5;padding:0 clamp(20px,4.5vw,64px) 0;}
+
+  /* ---------- top identity bar ---------- */
+  .ident{
+    display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+    padding:26px 0 12px;border-bottom:1px solid var(--ink);
+    font-family:var(--sans);font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  }
+  .ident .mark{color:var(--ink);font-weight:600;letter-spacing:.34em;}
+  .ident .mark b{color:var(--accent);font-weight:600;}
+  .ident .right{color:var(--ink-soft);text-align:right;line-height:1.7;}
+
+  /* ---------- opening: title low-left, dark plate bleeding top-right ---------- */
+  .opening{
+    display:grid;grid-template-columns:repeat(12,1fr);
+    column-gap:clamp(16px,2.4vw,34px);row-gap:24px;
+    min-height:clamp(560px,90vh,920px);padding-top:clamp(20px,4vh,48px);
+  }
+  .titleblock{grid-column:1/6;align-self:end;padding-bottom:clamp(20px,5vh,60px);}
+  .overline{font-family:var(--sans);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 18px;}
+  .overline b{color:var(--accent);font-weight:600;}
+  h1{
+    margin:0;font-family:var(--display);font-weight:500;
+    font-size:clamp(3.4rem,8.2vw,8rem);line-height:.92;letter-spacing:-.01em;color:var(--ink);
+  }
+  h1 em{font-style:italic;font-weight:500;color:var(--ink);}
+  .lede{
+    margin:1.4rem 0 0;max-width:34ch;font-family:var(--display);font-weight:500;
+    font-size:clamp(1.2rem,1.7vw,1.55rem);line-height:1.5;color:var(--ink);
+  }
+  .lede .red{color:var(--accent);font-style:italic;}
+
+  /* finding aid index */
+  .aid{grid-column:1/5;align-self:start;margin-top:6px;}
+  .aid h2{margin:0 0 10px;font-family:var(--sans);font-weight:600;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-soft);
+    border-bottom:1px solid var(--hair);padding-bottom:8px;}
+  .aid ol{list-style:none;margin:0;padding:0;}
+  .aid li{display:grid;grid-template-columns:2.1rem 1fr auto;gap:.6rem;align-items:baseline;
+    padding:7px 0;border-bottom:1px solid var(--hair);font-size:12px;}
+  .aid .n{font-family:var(--mono);font-size:11px;color:var(--accent);}
+  .aid .t{font-family:var(--display);font-style:italic;font-size:1.05rem;line-height:1.1;}
+  .aid .m{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;}
+
+  .hero-plate{grid-column:7/13;align-self:start;margin-top:-7vh;margin-right:clamp(-64px,-4.5vw,-20px);}
+  .hero-plate .plate{transform:rotate(-1.1deg);}
+
+  /* ---------- a plate (photograph as object) ---------- */
+  .plate{position:relative;display:block;background:var(--paper-2);
+    padding:10px 10px 10px;border:1px solid var(--keyline);
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 14px 20px 34px rgba(40,30,18,.20);}
+  .plate .print{width:100%;height:auto;filter:contrast(1.03) saturate(.9) brightness(1.015);}
+  .plate::after{content:"";position:absolute;inset:10px;mix-blend-mode:multiply;pointer-events:none;
+    background:linear-gradient(rgba(150,110,60,.05),rgba(40,28,16,.13));}
+  /* red crop-mark corners on the plate */
+  .plate .crops{position:absolute;inset:-7px;pointer-events:none;
+    background:
+      linear-gradient(var(--accent),var(--accent)) left top/11px 1px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) left top/1px 11px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) right top/11px 1px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) right top/1px 11px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) left bottom/11px 1px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) left bottom/1px 11px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) right bottom/11px 1px no-repeat,
+      linear-gradient(var(--accent),var(--accent)) right bottom/1px 11px no-repeat;
+    opacity:.7;}
+
+  /* numbered red call-out on a detail (square tick, no circle) */
+  .mark{position:absolute;z-index:3;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:700;
+    display:flex;align-items:center;gap:4px;}
+  .mark i{width:9px;height:9px;border:1.5px solid var(--accent);display:block;background:rgba(156,59,44,.12);}
+  .mark span{background:var(--paper);padding:0 2px;line-height:1.2;}
+
+  /* caption / finding-aid entry */
+  .cap{font-family:var(--sans);}
+  .cap .shelf{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  .cap .ttl{margin:0;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(1.3rem,2.1vw,1.85rem);line-height:1.16;color:var(--ink);}
+  .cap .maker{display:block;font-size:12px;letter-spacing:.04em;color:var(--ink);margin-top:5px;}
+  .cap .data{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--ink-soft);margin-top:4px;}
+  .cap .callouts{list-style:none;margin:12px 0 0;padding:0;}
+  .cap .callouts li{display:grid;grid-template-columns:1.1rem 1fr;gap:8px;font-size:12.5px;line-height:1.5;color:var(--ink);margin-bottom:5px;}
+  .cap .callouts b{font-family:var(--mono);font-size:10px;color:var(--accent);}
+  .cap .credit{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;}
+
+  /* marginalia — small handwritten-feeling curator notes, off grid */
+  .marginal{font-family:var(--display);font-style:italic;font-weight:500;color:var(--ink-soft);
+    font-size:clamp(1rem,1.4vw,1.25rem);line-height:1.4;max-width:24ch;}
+  .marginal::before{content:"";display:block;width:26px;height:1px;background:var(--accent);margin:0 0 9px;}
+
+  /* ---------- holdings grid (non-uniform, hand placed) ---------- */
+  .holdings{display:grid;grid-template-columns:repeat(12,1fr);
+    column-gap:clamp(16px,2.4vw,34px);row-gap:clamp(60px,9vh,130px);
+    padding:clamp(70px,12vh,160px) 0 clamp(40px,7vh,90px);align-items:start;}
+
+  .h-merian{grid-column:1/8;margin-left:clamp(-64px,-4.2vw,-18px);}
+  .h-merian .plate{transform:rotate(.9deg);}
+  .cap-merian{grid-column:8/13;align-self:center;}
+
+  .marg-1{grid-column:9/13;align-self:start;margin-top:6vh;justify-self:end;text-align:right;}
+  .marg-1::before{margin-left:auto;}
+
+  .h-carjat{grid-column:9/12;align-self:start;}
+  .h-carjat .plate{transform:rotate(-1.8deg);}
+  .cap-carjat{grid-column:8/12;}
+
+  .h-insects{grid-column:5/13;margin-right:clamp(-64px,-4.5vw,-18px);}
+  .h-insects .plate{transform:rotate(-.7deg);}
+  .cap-insects{grid-column:1/5;align-self:end;}
+
+  .h-white{grid-column:1/6;}
+  .h-white .plate{transform:rotate(1.2deg);}
+  .cap-white{grid-column:1/5;}
+
+  .marg-2{grid-column:7/12;align-self:center;margin-top:2vh;}
+
+  .h-braun{grid-column:5/13;margin-right:clamp(-72px,-5vw,-20px);}
+  .h-braun .plate{transform:rotate(-.6deg);}
+  .cap-braun{grid-column:1/5;align-self:end;}
+
+  /* ---------- shelf notes / credits (kept in the same archival voice) ---------- */
+  .shelf-notes{border-top:1px solid var(--ink);margin-top:clamp(40px,7vh,90px);
+    padding:clamp(34px,5vh,64px) 0 clamp(60px,9vh,120px);
+    display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(16px,2.4vw,34px);row-gap:30px;}
+  .sn-head{grid-column:1/5;}
+  .sn-head h2{margin:0;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(2rem,3.4vw,3rem);line-height:1;color:var(--ink);}
+  .sn-head p{margin:14px 0 0;font-family:var(--display);font-weight:500;font-size:1.15rem;line-height:1.45;max-width:26ch;color:var(--ink-soft);}
+  .sn-credits{grid-column:6/13;}
+  .sn-credits .row{display:grid;grid-template-columns:3.2rem 1fr auto;gap:.8rem;align-items:baseline;
+    padding:11px 0;border-bottom:1px solid var(--hair);}
+  .sn-credits .row:first-child{border-top:1px solid var(--hair);}
+  .sn-credits .cs{font-family:var(--mono);font-size:10.5px;color:var(--accent);}
+  .sn-credits .w{font-family:var(--display);font-style:italic;font-size:1.1rem;line-height:1.15;}
+  .sn-credits .w b{display:block;font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:400;margin-top:3px;}
+  .sn-credits .src{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);text-align:right;}
+  .colophon{grid-column:1/13;margin-top:18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;
+    line-height:1.8;color:var(--ink-soft);max-width:96ch;}
+  .colophon b{color:var(--ink);font-weight:400;}
+
+  /* ---------- restrained load reveal ---------- */
+  .rise{opacity:0;transform:translateY(18px);}
+  .rise.in{opacity:1;transform:none;transition:opacity 1s ease,transform 1s cubic-bezier(.16,.84,.3,1);}
+  .plate{transition:box-shadow .5s ease, transform .5s ease;}
+  .holdings .plate:hover{box-shadow:0 1px 0 rgba(255,255,255,.4) inset, 20px 28px 48px rgba(40,30,18,.28);}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:880px){
+    .opening{grid-template-columns:repeat(6,1fr);min-height:0;}
+    .titleblock{grid-column:1/7;align-self:auto;padding-bottom:18px;}
+    .hero-plate{grid-column:1/7;margin:8px 0 0;}
+    .hero-plate .plate{transform:rotate(-.8deg);}
+    .aid{grid-column:1/7;margin-top:18px;}
+    .holdings{grid-template-columns:repeat(6,1fr);row-gap:54px;}
+    .h-merian,.h-insects,.h-white,.h-braun{grid-column:1/7;margin:0;}
+    .h-carjat{grid-column:1/5;}
+    .cap-merian,.cap-insects,.cap-white,.cap-braun,.cap-carjat{grid-column:1/7;}
+    .marg-1,.marg-2{grid-column:1/7;justify-self:start;text-align:left;margin:0;}
+    .marg-1{text-align:left;}.marg-1::before{margin-left:0;}
+    .sn-head,.sn-credits{grid-column:1/7;}
+    .plate{transform:none!important;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .rise{opacity:1!important;transform:none!important;transition:none!important;}
+  }
+</style>
+</head>
+<body>
+  <!-- self-authored grain filter -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .85 0"/></filter>
+  </svg>
+  <div class="grain" aria-hidden="true"><svg width="100%" height="100%"><rect width="100%" height="100%" filter="url(#g)"/></svg></div>
+  <div class="dust" aria-hidden="true"></div>
+  <div class="vign" aria-hidden="true"></div>
+  <div class="cropmarks" aria-hidden="true"></div>
+
+  <main class="store">
+    <div class="ident rise">
+      <span class="mark">The Cold Store <b>·</b> a viewing room</span>
+      <span class="right">Viewing eleven · public domain<br>open for a fortnight, daylight only</span>
+    </div>
+
+    <section class="opening">
+      <div class="titleblock rise">
+        <p class="overline">A finding aid for things that are <b>not ours to keep</b></p>
+        <h1>Quiet<br><em>Holdings</em></h1>
+        <p class="lede">Six studies and photographs, pulled from open collections and
+          laid out on the long table. <span class="red">Nothing here belongs to us;</span>
+          all of it is already in the public domain.</p>
+      </div>
+
+      <div class="hero-plate rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/02_pictorialist.jpg" alt="A dark pictorialist photograph of a seated man, a faint framed portrait behind him" loading="eager">
+          <span class="mark" style="left:80%;top:13%"><i></i><span>1</span></span>
+        </figure>
+      </div>
+
+      <nav class="aid rise" aria-label="finding aid">
+        <h2>On the table this fortnight</h2>
+        <ol>
+          <li><span class="n">02</span><span class="t">Untitled</span><span class="m">Demachy · 1900s</span></li>
+          <li><span class="n">05</span><span class="t">Convolvulus</span><span class="m">Merian · c.1670</span></li>
+          <li><span class="n">02</span><span class="t">A Woman</span><span class="m">Carjat · 1879</span></li>
+          <li><span class="n">06</span><span class="t">Studies of Insects</span><span class="m">Bronckhorst</span></li>
+          <li><span class="n">04</span><span class="t">Landscape</span><span class="m">White · 1856</span></li>
+          <li><span class="n">09</span><span class="t">The Acropolis</span><span class="m">Braun · 1880s</span></li>
+        </ol>
+      </nav>
+    </section>
+
+    <section class="holdings">
+      <!-- Merian botanical, bleeds left -->
+      <div class="h-merian rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/03_botanical.jpg" alt="Watercolour study of a convolvulus plant with a hawk moth and caterpillar on cream vellum">
+          <span class="mark" style="left:46%;top:14%"><i></i><span>1</span></span>
+          <span class="mark" style="left:44%;top:62%"><i></i><span>2</span></span>
+        </figure>
+      </div>
+      <div class="cap-merian rise">
+        <div class="cap">
+          <span class="shelf">CS–05 · folio, unbound</span>
+          <h3 class="ttl">Convolvulus and Metamorphosis of the Convolvulus Hawk Moth</h3>
+          <span class="maker">Maria Sibylla Merian</span>
+          <span class="data">c. 1670–90 · watercolour on vellum</span>
+          <ol class="callouts">
+            <li><b>1</b> the moth, kept for the red of its body</li>
+            <li><b>2</b> the caterpillar — the reason the page exists</li>
+          </ol>
+          <span class="credit">Cleveland Museum of Art — CC0</span>
+        </div>
+      </div>
+
+      <p class="marg-1 marginal rise">We laid them out in the order they came out of the
+        drawer, and decided that order was as good as any.</p>
+
+      <!-- Carjat oval portrait object, small, high -->
+      <div class="h-carjat rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/01_portrait.jpg" alt="A sepia portrait of a woman in an oval copper frame, photographed on grey storage board">
+        </figure>
+      </div>
+      <div class="cap-carjat rise">
+        <div class="cap">
+          <span class="shelf">CS–02 · case, do not reframe</span>
+          <h3 class="ttl">Untitled (Portrait of a Woman)</h3>
+          <span class="maker">Etienne Carjat</span>
+          <span class="data">1879 · photograph on enamel, copper-alloy frame</span>
+          <span class="credit">Cleveland Museum of Art — CC0</span>
+        </div>
+      </div>
+
+      <!-- Bronckhorst insects, bleeds right -->
+      <div class="h-insects rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/04_insects.jpg" alt="A sheet of insect studies scattered across cream paper">
+          <span class="mark" style="left:36%;top:28%"><i></i><span>1</span></span>
+          <span class="mark" style="left:53%;top:78%"><i></i><span>2</span></span>
+        </figure>
+      </div>
+      <div class="cap-insects rise">
+        <div class="cap">
+          <span class="shelf">CS–06 · folio</span>
+          <h3 class="ttl">Studies of Insects</h3>
+          <span class="maker">Johannes Bronckhorst</span>
+          <span class="data">c. 1665–1727 · watercolour &amp; opaque watercolour</span>
+          <ol class="callouts">
+            <li><b>1</b> the cicada, placed dead-centre on purpose</li>
+            <li><b>2</b> a red beetle nobody has named for us</li>
+          </ol>
+          <span class="credit">Cleveland Museum of Art — CC0</span>
+        </div>
+      </div>
+
+      <!-- Henry White woodland -->
+      <div class="h-white rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/05_landscape.jpg" alt="An 1856 albumen photograph of figures resting in a wooded clearing">
+        </figure>
+      </div>
+      <div class="cap-white rise">
+        <div class="cap">
+          <span class="shelf">CS–04 · drawer 3</span>
+          <h3 class="ttl">Landscape</h3>
+          <span class="maker">Henry White</span>
+          <span class="data">1856 · albumen print, wet collodion negative</span>
+          <span class="credit">Cleveland Museum of Art — CC0</span>
+        </div>
+      </div>
+
+      <p class="marg-2 marginal rise">Measurements were taken in low light. Treat every
+        dimension on this table as a polite approximation.</p>
+
+      <!-- Braun Acropolis, wide, bleeds right -->
+      <div class="h-braun rise">
+        <figure class="plate">
+          <span class="crops" aria-hidden="true"></span>
+          <img class="print" src="assets/images/06_acropolis.jpg" alt="A warm-brown carbon print of the Acropolis seen across open ground">
+          <span class="mark" style="left:95%;top:50%"><i></i><span>1</span></span>
+        </figure>
+      </div>
+      <div class="cap-braun rise">
+        <div class="cap">
+          <span class="shelf">CS–09 · oversize, won't lie flat</span>
+          <h3 class="ttl">View of the Acropolis</h3>
+          <span class="maker">Adolphe Braun &amp; Co.</span>
+          <span class="data">c. 1880s · mammoth carbon print, brown-toned</span>
+          <ol class="callouts">
+            <li><b>1</b> the print curls here, and a hand once wrote “77”</li>
+          </ol>
+          <span class="credit">Cleveland Museum of Art — CC0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="shelf-notes" id="end">
+      <div class="sn-head rise">
+        <h2>Shelf&nbsp;notes</h2>
+        <p>What is on the table, where it really comes from, and the single fact that
+          it is all public domain.</p>
+      </div>
+      <div class="sn-credits rise">
+        <div class="row"><span class="cs">CS–02</span><span class="w">Untitled<b>Robert Demachy · c.1900–06 · gum bichromate</b></span><span class="src">CMA · CC0</span></div>
+        <div class="row"><span class="cs">CS–05</span><span class="w">Convolvulus &amp; the Hawk Moth<b>Maria Sibylla Merian · c.1670–90 · watercolour on vellum</b></span><span class="src">CMA · CC0</span></div>
+        <div class="row"><span class="cs">CS–02</span><span class="w">Portrait of a Woman<b>Etienne Carjat · 1879 · photograph on enamel</b></span><span class="src">CMA · CC0</span></div>
+        <div class="row"><span class="cs">CS–06</span><span class="w">Studies of Insects<b>Johannes Bronckhorst · c.1665–1727 · watercolour</b></span><span class="src">CMA · CC0</span></div>
+        <div class="row"><span class="cs">CS–04</span><span class="w">Landscape<b>Henry White · 1856 · albumen print</b></span><span class="src">CMA · CC0</span></div>
+        <div class="row"><span class="cs">CS–09</span><span class="w">View of the Acropolis<b>Adolphe Braun &amp; Co. · c.1880s · carbon print</b></span><span class="src">CMA · CC0</span></div>
+      </div>
+      <p class="colophon">
+        <b>The Cold Store and its “viewing” are fictional</b> — a layout exercise, not a real
+        institution, and nothing on this page is for sale. The images are genuine public-domain
+        works released <b>CC0</b> by the Cleveland Museum of Art Open Access programme; shelf marks
+        and the curator's notes are invented. Typeset in Cormorant Garamond &amp; Archivo (OFL),
+        self-hosted. Reference-first mimic test · v0.2.
+      </p>
+    </section>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const els = Array.from(document.querySelectorAll(".rise"));
+    const reveal = (e) => e.classList.add("in");
+    if (reduce || !("IntersectionObserver" in window)) {
+      els.forEach(reveal); return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(e => io.observe(e));
+    // reveal whatever is already in view on first paint (no blank flash)
+    requestAnimationFrame(() => els.forEach(e => {
+      if (e.getBoundingClientRect().top < innerHeight * 1.02) reveal(e);
+    }));
+    // safety net: content must never stay hidden if the observer misfires
+    setTimeout(() => els.forEach(reveal), 2400);
+  })();
+  </script>
+</body>
+</html>
+</content>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="760" viewBox="0 0 760 760" role="img" aria-label="Self-authored optical disc teaching plate">
+  <defs>
+    <radialGradient id="disc" cx="47%" cy="42%" r="55%">
+      <stop offset="0" stop-color="#fbfbf0"/>
+      <stop offset=".28" stop-color="#88f2ff"/>
+      <stop offset=".45" stop-color="#f9ff73"/>
+      <stop offset=".63" stop-color="#ff5eb9"/>
+      <stop offset=".78" stop-color="#51ff6a"/>
+      <stop offset="1" stop-color="#9a91ff"/>
+    </radialGradient>
+    <filter id="rough">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="23"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .22"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="760" height="760" fill="none"/>
+  <circle cx="380" cy="380" r="318" fill="#111"/>
+  <circle cx="380" cy="380" r="302" fill="url(#disc)" stroke="#f9f2cf" stroke-width="7"/>
+  <circle cx="380" cy="380" r="86" fill="#111" stroke="#fbfbf0" stroke-width="5"/>
+  <circle cx="380" cy="380" r="49" fill="#0d0d0b" stroke="#8dfc62" stroke-width="3"/>
+  <path d="M128 274c70 18 140 23 212 15 92-10 171-1 254 40" fill="none" stroke="#080807" stroke-width="34" opacity=".45"/>
+  <path d="M169 503c56-47 127-70 213-70 91 0 164-20 220-61" fill="none" stroke="#fff7b1" stroke-width="14" opacity=".55"/>
+  <path d="M219 150l311 459M608 210L154 531M84 373h592M380 76v608" stroke="#111" stroke-width="3" opacity=".28"/>
+  <g fill="none" stroke="#0a0a08" stroke-width="2" opacity=".55">
+    <circle cx="380" cy="380" r="146"/>
+    <circle cx="380" cy="380" r="203"/>
+    <circle cx="380" cy="380" r="260"/>
+  </g>
+  <g font-family="IBM Plex Mono, monospace" font-size="23" font-weight="700" fill="#12120f">
+    <text x="174" y="118" transform="rotate(-9 174 118)">CD-ROM SIGNAL PLATE</text>
+    <text x="435" y="662" transform="rotate(8 435 662)">TRACK 23 / READ ONLY</text>
+  </g>
+  <rect x="0" y="0" width="760" height="760" filter="url(#rough)"/>
+</svg>

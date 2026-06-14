@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor / OS
+*.swp
+Thumbs.db
+.idea/
+.vscode/
+
+# Env (defensive — none currently present)
+.env
+.env.*

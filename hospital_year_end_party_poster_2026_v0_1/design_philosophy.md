@@ -1,0 +1,11 @@
+# Champagne Quiet
+
+Champagne Quiet is a visual language of celebration held under restraint. It treats festivity not as noise, but as a controlled glow: a narrow gold line, a soft field of warm ivory, a deep reserve of navy, and the disciplined placement of essential information. Space is allowed to feel ceremonial. Every margin, rule, and typographic interval should appear meticulously crafted, as if tuned over countless hours by someone with deep expertise in hospitality, print, and institutional communication.
+
+The philosophy favors architectural calm. Forms are rectangular, framed, and stable, but softened by light, translucent layers, and small ornamental gestures that suggest a hotel evening without literal decoration. Rhythm comes from repeated fine rules, tiny points of light, and measured information blocks. Nothing should feel pasted on. The final work must carry painstaking attention in the quietest details: exact alignments, balanced negative space, and a hierarchy that can be read at a glance.
+
+Color behaves like material. Navy is velvet shadow, ivory is linen paper, champagne is polished metal, and muted green is a subtle note of care. The palette is premium but friendly, avoiding both corporate coldness and party flyer loudness. Visual warmth is built through calibrated contrast, not through excess. The design should look like the product of master-level execution: refined, labored over, and deliberately restrained.
+
+Typography is ceremonial and useful. A refined serif may hold the occasion, while compact sans-serif details carry practical information with clarity. Text is not decoration, but it is shaped as part of the composition: grouped, spaced, and framed so the viewer feels guided rather than instructed. Even placeholders should be handled with dignity. The craft lies in making necessary information feel composed, polished, and human.
+
+The subtle conceptual thread is care at the end of a demanding year. The poster should not depict medicine directly; instead it should imply rest, gratitude, and a shared evening away from the hospital floor. The atmosphere is hotel light after dusk: reflective, calm, welcoming. The final image should be pristine enough for public display, with no clutter, no gimmicks, and no generic template residue.

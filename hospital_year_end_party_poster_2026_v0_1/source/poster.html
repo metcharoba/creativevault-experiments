@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hospital Year-End Party 2026 Poster</title>
+  <style>
+    :root {
+      --navy: #071323;
+      --navy-2: #10243a;
+      --ivory: #f4ead9;
+      --ivory-2: #dfd0b9;
+      --champagne: #cba86a;
+      --gold-soft: #e6cf9b;
+      --sage: #91a18e;
+      --ink: #17202b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: 1080px 1536px;
+      margin: 0;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #1d2430;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .poster {
+      position: relative;
+      width: 1080px;
+      height: 1536px;
+      overflow: hidden;
+      color: var(--ivory);
+      background:
+        radial-gradient(circle at 50% 4%, rgba(255, 239, 198, .22), transparent 18%),
+        radial-gradient(circle at 18% 21%, rgba(203, 168, 106, .15), transparent 22%),
+        linear-gradient(180deg, #081421 0%, #0c1a2c 47%, #07101d 100%);
+      isolation: isolate;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0 0, rgba(244,234,217,.55) 0 1px, transparent 1.4px),
+        radial-gradient(circle at 70% 20%, rgba(230,207,155,.42) 0 1px, transparent 1.5px),
+        linear-gradient(90deg, rgba(244,234,217,.035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(244,234,217,.025) 1px, transparent 1px);
+      background-size: 34px 34px, 58px 58px, 72px 72px, 72px 72px;
+      opacity: .52;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .poster::after {
+      content: "";
+      position: absolute;
+      inset: 34px;
+      border: 1px solid rgba(230, 207, 155, .62);
+      box-shadow:
+        inset 0 0 0 10px rgba(244, 234, 217, .025),
+        inset 0 0 0 11px rgba(230, 207, 155, .18);
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .soft-light {
+      position: absolute;
+      left: 50%;
+      top: -60px;
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(244,234,217,.3), rgba(203,168,106,.08) 42%, transparent 68%);
+      filter: blur(2px);
+      z-index: 0;
+    }
+
+    .arc {
+      position: absolute;
+      inset: 104px 116px auto;
+      height: 418px;
+      border: 1px solid rgba(230,207,155,.28);
+      border-bottom: none;
+      border-radius: 520px 520px 0 0;
+      z-index: 2;
+    }
+
+    .arc::before,
+    .arc::after {
+      content: "";
+      position: absolute;
+      inset: 42px 78px auto;
+      height: 290px;
+      border: 1px solid rgba(244,234,217,.1);
+      border-bottom: none;
+      border-radius: 380px 380px 0 0;
+    }
+
+    .arc::after {
+      inset: 92px 184px auto;
+      height: 160px;
+      border-color: rgba(203,168,106,.24);
+    }
+
+    .content {
+      position: relative;
+      z-index: 5;
+      height: 100%;
+      padding: 86px 96px 78px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 36px;
+      color: rgba(244,234,217,.77);
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 2.8px;
+    }
+
+    .topline .mark {
+      display: grid;
+      gap: 8px;
+      min-width: 230px;
+    }
+
+    .mark-line {
+      width: 132px;
+      height: 2px;
+      background: var(--champagne);
+    }
+
+    .topline .right {
+      text-align: right;
+      line-height: 1.45;
+    }
+
+    .main {
+      align-self: center;
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 42px;
+      color: var(--gold-soft);
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    .kicker::before,
+    .kicker::after {
+      content: "";
+      width: 74px;
+      height: 1px;
+      background: rgba(230,207,155,.62);
+    }
+
+    h1 {
+      margin: 0;
+      width: 860px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+      font-size: 104px;
+      line-height: .96;
+      letter-spacing: -1.6px;
+      color: var(--ivory);
+      text-wrap: balance;
+    }
+
+    h1 span {
+      display: block;
+      margin-top: 14px;
+      color: var(--gold-soft);
+      font-size: 82px;
+      font-style: italic;
+    }
+
+    .short-line {
+      width: 660px;
+      margin: 48px auto 0;
+      color: rgba(244,234,217,.82);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+      line-height: 1.25;
+    }
+
+    .details-panel {
+      margin-top: 62px;
+      width: 820px;
+      padding: 34px 38px;
+      background: rgba(244,234,217,.94);
+      color: var(--ink);
+      border: 1px solid rgba(230,207,155,.86);
+      box-shadow: 0 28px 80px rgba(0,0,0,.32);
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 42px;
+      row-gap: 18px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 132px 1fr;
+      gap: 18px;
+      align-items: baseline;
+      min-height: 42px;
+      border-bottom: 1px solid rgba(23,32,43,.14);
+      padding-bottom: 12px;
+    }
+
+    .item.wide {
+      grid-column: 1 / -1;
+      grid-template-columns: 132px 1fr;
+    }
+
+    .label {
+      color: #6d604d;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.7px;
+    }
+
+    .value {
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      line-height: 1.15;
+    }
+
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 28px;
+      color: rgba(244,234,217,.68);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2.4px;
+    }
+
+    .footer::before,
+    .footer::after {
+      content: "";
+      height: 1px;
+      background: rgba(230,207,155,.45);
+      transform: translateY(-7px);
+    }
+
+    .motif {
+      position: absolute;
+      z-index: 3;
+      width: 122px;
+      height: 122px;
+      border: 1px solid rgba(230,207,155,.48);
+      transform: rotate(45deg);
+    }
+
+    .motif.one {
+      left: 82px;
+      top: 612px;
+    }
+
+    .motif.two {
+      right: 88px;
+      top: 748px;
+      width: 88px;
+      height: 88px;
+      border-color: rgba(244,234,217,.24);
+    }
+
+    .motif::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(230,207,155,.28);
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="poster" aria-label="Hospital Year-End Party 2026 poster">
+    <div class="soft-light"></div>
+    <div class="arc" aria-hidden="true"></div>
+    <div class="motif one" aria-hidden="true"></div>
+    <div class="motif two" aria-hidden="true"></div>
+
+    <div class="content">
+      <header class="topline">
+        <div class="mark">
+          <span>Hotel Evening</span>
+          <span class="mark-line"></span>
+        </div>
+        <div class="right">
+          <span>For hospital staff</span><br>
+          <span>Year-end gathering</span>
+        </div>
+      </header>
+
+      <main class="main">
+        <div class="kicker">Invitation</div>
+        <h1>Hospital Year-End <span>Party 2026</span></h1>
+        <p class="short-line">Let’s celebrate the end of the year together.</p>
+
+        <section class="details-panel" aria-label="Event details">
+          <div class="details-grid">
+            <div class="item">
+              <div class="label">Date</div>
+              <div class="value">[DATE]</div>
+            </div>
+            <div class="item">
+              <div class="label">Time</div>
+              <div class="value">[TIME]</div>
+            </div>
+            <div class="item">
+              <div class="label">Venue</div>
+              <div class="value">[HOTEL NAME]</div>
+            </div>
+            <div class="item">
+              <div class="label">Fee</div>
+              <div class="value">[FEE]</div>
+            </div>
+            <div class="item wide">
+              <div class="label">Address</div>
+              <div class="value">[VENUE / CITY]</div>
+            </div>
+            <div class="item">
+              <div class="label">Deadline</div>
+              <div class="value">[DEADLINE]</div>
+            </div>
+            <div class="item">
+              <div class="label">Contact / Organizer</div>
+              <div class="value">[CONTACT]</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>Organizer</span>
+        <span>[CONTACT]</span>
+        <span></span>
+      </footer>
+    </div>
+  </section>
+</body>
+</html>

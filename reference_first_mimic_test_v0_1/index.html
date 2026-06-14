@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SECOND PRESSING — a risograph show by Gutter Press</title>
+<meta name="description" content="Fourteen risograph plates, printed in two inks, hung for one weekend. A fictional print show built as a reference-first design experiment.">
+<style>
+  @font-face{
+    font-family:"BigShoulders";
+    src:url("assets/fonts/BigShouldersDisplay-800-latin.woff2") format("woff2");
+    font-weight:800; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:"Fraunces";
+    src:url("assets/fonts/Fraunces-italic-400-latin.woff2") format("woff2");
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:"Fraunces";
+    src:url("assets/fonts/Fraunces-italic-600-latin.woff2") format("woff2");
+    font-weight:600; font-style:italic; font-display:swap;
+  }
+
+  :root{
+    /* riso theme tokens (theme-factory: on-the-fly "Newsprint Riso" theme) */
+    --paper:#efe6d0;
+    --paper-deep:#e6dabb;
+    --ink:#1c1611;
+    --ink-soft:#5b5142;
+    --pink:#ff4d63;     /* riso fluorescent red-pink */
+    --blue:#1f3bb0;     /* riso blue */
+    --hair:rgba(28,22,17,.30);
+    --hair-soft:rgba(28,22,17,.16);
+    --disp:"BigShoulders","Arial Narrow",sans-serif;
+    --serif:"Fraunces",Georgia,"Times New Roman",serif;
+    --mono:ui-monospace,"SF Mono","SFMono-Regular",Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--mono);
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--pink);color:var(--paper);}
+
+  /* ---- paper grain + edge vignette (self-authored, fixed overlays) ---- */
+  .grain{
+    position:fixed; inset:-40px; z-index:60; pointer-events:none;
+    opacity:.5; mix-blend-mode:multiply;
+  }
+  .deckle{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    box-shadow:inset 0 0 160px rgba(60,40,20,.16), inset 0 0 28px rgba(60,40,20,.10);
+  }
+  /* faint baseline rule, like a layout sheet */
+  .sheet{
+    position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
+    background:
+      linear-gradient(90deg, transparent 0 calc(8vw - 1px), var(--hair-soft) calc(8vw - 1px) 8vw, transparent 8vw),
+      linear-gradient(90deg, transparent 0 calc(92vw - 1px), var(--hair-soft) calc(92vw - 1px) 92vw, transparent 92vw);
+  }
+
+  .stage{ position:relative; z-index:5; }
+
+  /* ====== top masthead row (asymmetric, baseline) ====== */
+  .top{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:1rem;
+    padding:1.4rem 8vw 0;
+    font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .top .press{ color:var(--ink); font-weight:600; letter-spacing:.34em; }
+  .top .right{ text-align:right; line-height:1.7; }
+  .rule{ height:2px; background:var(--ink); margin:.7rem 8vw 0; }
+
+  /* ====== hero lockup: huge type overlapping the printed plate ====== */
+  .hero{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr; /* override below */
+    padding:clamp(1.5rem,4vw,3rem) 8vw clamp(2rem,5vw,4rem);
+    min-height:clamp(520px,82vh,860px);
+  }
+  @media(min-width:880px){
+    .hero{ grid-template-columns:minmax(0,7fr) minmax(0,5fr); column-gap:0; }
+  }
+
+  .lockup{ position:relative; z-index:6; align-self:center; }
+  .kicker-strip{
+    display:inline-flex; align-items:center; gap:.7rem;
+    margin:0 0 1.1rem; padding:.3rem .55rem;
+    border:1.5px solid var(--ink); background:var(--paper);
+    font-size:10.5px; letter-spacing:.26em; text-transform:uppercase;
+    transform:rotate(-1.4deg);
+  }
+  .kicker-strip b{ color:var(--pink); font-weight:700; letter-spacing:.1em; }
+
+  /* misregistered duotone display title */
+  .duo{ position:relative; display:block; font-family:var(--disp); }
+  .duo .ln{
+    display:block; position:relative;
+    font-size:clamp(4.4rem,17.5vw,15rem);
+    line-height:.78; letter-spacing:.005em; text-transform:uppercase;
+  }
+  .duo .ln:nth-child(2){ margin-left:.16em; } /* second word indented = off-grid */
+  .duo .ln .layer{ display:block; }
+  .duo .ln .base{ color:var(--ink); }
+  .duo .ln .pink, .duo .ln .blue{
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply;
+  }
+  .duo .ln .pink{ color:var(--pink); transform:translate(-5px,-3px); }
+  .duo .ln .blue{ color:var(--blue); transform:translate(4px,4px); opacity:.92; }
+
+  .colophon{
+    max-width:30ch; margin:1.6rem 0 0;
+    font-family:var(--serif); font-style:italic; font-weight:400;
+    font-size:clamp(1.15rem,2.1vw,1.7rem); line-height:1.4; color:var(--ink);
+  }
+  .colophon .drop{ color:var(--pink); }
+
+  .meta-line{
+    margin:1.5rem 0 0; max-width:34ch;
+    font-size:11px; letter-spacing:.16em; line-height:1.9; color:var(--ink-soft);
+    text-transform:uppercase;
+  }
+  .meta-line b{ color:var(--ink); }
+
+  /* the printed plate (generative halftone) — bleeds off the right edge */
+  .plate-wrap{
+    position:relative; z-index:5; align-self:stretch;
+    display:flex; align-items:center; justify-content:flex-end;
+    margin-top:clamp(1rem,3vw,0);
+  }
+  .plate{
+    position:relative;
+    width:min(108%,560px); aspect-ratio:4/5;
+    margin-right:-10vw; /* bleed past the 8vw gutter */
+    transform:rotate(1.6deg);
+    border:2px solid var(--ink);
+    background:var(--paper-deep);
+    box-shadow:14px 18px 0 rgba(28,22,17,.14);
+  }
+  .plate canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; mix-blend-mode:multiply; }
+  .plate .tape{
+    position:absolute; top:-15px; left:30px; width:120px; height:26px;
+    background:repeating-linear-gradient(135deg, rgba(255,77,99,.35) 0 7px, rgba(255,77,99,.18) 7px 14px);
+    border:1px solid rgba(28,22,17,.25);
+    transform:rotate(-5deg);
+  }
+  .plate .cap{
+    position:absolute; left:8px; bottom:8px; right:8px;
+    display:flex; justify-content:space-between; gap:.5rem;
+    font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink);
+    background:var(--paper); border:1px solid var(--ink); padding:.32rem .5rem;
+  }
+  .plate .cap .swatches{ display:inline-flex; gap:5px; align-items:center; }
+  .plate .cap i{ width:11px; height:11px; display:inline-block; border:1px solid var(--ink); }
+  .plate .cap i.p{ background:var(--pink); }
+  .plate .cap i.b{ background:var(--blue); }
+
+  /* rubber stamps placed off-grid */
+  .stamp{
+    position:absolute; z-index:7; pointer-events:none;
+    font-family:var(--disp); text-transform:uppercase; letter-spacing:.05em;
+    color:var(--pink); opacity:.62;
+    border:3px double var(--pink); padding:.18em .4em; line-height:.9;
+  }
+  .stamp.one{ top:7%; right:7vw; transform:rotate(-13deg); font-size:clamp(1rem,2.4vw,1.7rem); }
+  .stamp.two{ bottom:6%; left:41vw; transform:rotate(8deg); color:var(--blue); border-color:var(--blue); font-size:clamp(.9rem,1.8vw,1.3rem); }
+  @media(max-width:760px){ .stamp{ display:none; } }
+
+  /* ====== ledger of plates (editorial index, not cards) ====== */
+  .ledger{ padding:clamp(2.5rem,7vw,6rem) 8vw clamp(1rem,3vw,2rem); }
+  .ledger-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+    border-top:2px solid var(--ink); border-bottom:1px solid var(--ink);
+    padding:.6rem 0; margin-bottom:.2rem;
+    font-size:11px; letter-spacing:.26em; text-transform:uppercase;
+  }
+  .ledger-head h2{ margin:0; font:inherit; font-weight:600; letter-spacing:.26em; }
+  .row{
+    display:grid;
+    grid-template-columns:3.2rem minmax(0,1fr) 9rem 6rem;
+    align-items:baseline; gap:1rem;
+    padding:.85rem 0; border-bottom:1px solid var(--hair-soft);
+  }
+  .row .no{ font-family:var(--disp); font-size:1.7rem; line-height:1; color:var(--ink); }
+  .row .ttl{ font-family:var(--serif); font-style:italic; font-size:clamp(1.05rem,2vw,1.5rem); line-height:1.2; }
+  .row .ink{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+  .row .ink em{ font-style:normal; color:var(--pink); }
+  .row .ink em.b{ color:var(--blue); }
+  .row .ed{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); text-align:right; }
+  /* uneven indents so the ledger doesn't read as a tidy table */
+  .row:nth-child(3){ padding-left:.6rem; }
+  .row:nth-child(5){ padding-left:1.4rem; }
+  .row:nth-child(8){ padding-left:.9rem; }
+  .row:hover{ background:rgba(255,77,99,.07); }
+  .row:hover .no{ color:var(--pink); }
+
+  @media(max-width:680px){
+    .row{ grid-template-columns:2.4rem minmax(0,1fr); }
+    .row .ink, .row .ed{ grid-column:2; text-align:left; }
+    .row:nth-child(n){ padding-left:0; }
+  }
+
+  /* ====== footer band: details + dormant reserve ====== */
+  .foot{
+    display:grid; gap:clamp(1.5rem,4vw,3rem);
+    grid-template-columns:1fr; padding:clamp(2.5rem,6vw,5rem) 8vw clamp(3rem,8vw,6rem);
+    border-top:2px solid var(--ink); margin-top:clamp(2rem,5vw,4rem);
+  }
+  @media(min-width:760px){ .foot{ grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); } }
+  .when h3{
+    margin:0 0 1rem; font-family:var(--disp); text-transform:uppercase;
+    font-size:clamp(2rem,5vw,3.4rem); line-height:.9; letter-spacing:.01em;
+  }
+  .when dl{ margin:0; display:grid; grid-template-columns:6rem 1fr; gap:.5rem 1rem; }
+  .when dt{ font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); padding-top:.25rem; }
+  .when dd{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.15rem; line-height:1.4; }
+  .reserve{ align-self:end; }
+  .reserve p{ font-family:var(--serif); font-style:italic; font-size:1.15rem; line-height:1.5; max-width:30ch; margin:0 0 1.1rem; }
+  .reserve .go{
+    display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink); text-decoration:none;
+    border-bottom:2px solid var(--pink); padding-bottom:3px;
+  }
+  .reserve .go:hover{ color:var(--pink); }
+  .reserve .small{ margin:1.2rem 0 0; font-size:10.5px; letter-spacing:.12em; color:var(--ink-soft); text-transform:uppercase; line-height:1.7; }
+
+  .endline{
+    padding:0 8vw clamp(2rem,5vw,3rem);
+    font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:.6rem;
+  }
+
+  /* page-load reveal, restrained */
+  .rise{ opacity:0; transform:translateY(16px); }
+  .rise.in{ opacity:1; transform:none; transition:opacity .9s ease, transform .9s cubic-bezier(.16,.84,.3,1); }
+
+  @media (prefers-reduced-motion:reduce){
+    .rise{ opacity:1!important; transform:none!important; transition:none!important; }
+  }
+</style>
+</head>
+<body>
+  <!-- self-authored grain filter -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="paperGrain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0"/>
+    </filter>
+  </svg>
+  <div class="grain" aria-hidden="true">
+    <svg width="100%" height="100%"><rect width="100%" height="100%" filter="url(#paperGrain)"/></svg>
+  </div>
+  <div class="sheet" aria-hidden="true"></div>
+  <div class="deckle" aria-hidden="true"></div>
+
+  <main class="stage">
+    <div class="top rise">
+      <span class="press">Gutter Press</span>
+      <span class="right">Riso editions, no.&nbsp;03<br>Salt Quarter · back room</span>
+    </div>
+    <div class="rule rise" aria-hidden="true"></div>
+
+    <section class="hero">
+      <div class="lockup rise">
+        <span class="kicker-strip">A one-weekend print show · <b>two inks only</b></span>
+        <h1 class="duo" aria-label="Second Pressing">
+          <span class="ln">
+            <span class="layer base" aria-hidden="true">Second</span>
+            <span class="layer pink" aria-hidden="true">Second</span>
+            <span class="layer blue" aria-hidden="true">Second</span>
+          </span>
+          <span class="ln">
+            <span class="layer base" aria-hidden="true">Pressing</span>
+            <span class="layer pink" aria-hidden="true">Pressing</span>
+            <span class="layer blue" aria-hidden="true">Pressing</span>
+          </span>
+        </h1>
+        <p class="colophon">Fourteen plates, pulled twice through the drum — once in
+          <span class="drop">fluorescent red</span>, once in blue. The mis-registration
+          is left in on purpose.</p>
+        <p class="meta-line">Fri–Sun · <b>14–16 November</b> · from 6pm until the ink runs low<br>
+          Free entry · prints from £18 · hand-numbered at the door</p>
+      </div>
+
+      <div class="plate-wrap rise">
+        <figure class="plate">
+          <span class="tape" aria-hidden="true"></span>
+          <canvas id="plate" aria-label="A generative two-ink halftone plate"></canvas>
+          <figcaption class="cap">
+            <span>Plate 07 · drum proof</span>
+            <span class="swatches"><i class="p"></i><i class="b"></i> ed. 30</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <span class="stamp one" aria-hidden="true">Walk-ins<br>welcome</span>
+      <span class="stamp two" aria-hidden="true">Misprint = original</span>
+    </section>
+
+    <section class="ledger rise">
+      <div class="ledger-head">
+        <h2>The plates</h2>
+        <span>14 works · 2 inks · sugar paper 120gsm</span>
+      </div>
+
+      <div class="row">
+        <span class="no">01</span>
+        <span class="ttl">A field seen from a slow train</span>
+        <span class="ink"><em>red</em> over <em class="b">blue</em></span>
+        <span class="ed">ed. 25</span>
+      </div>
+      <div class="row">
+        <span class="no">02</span>
+        <span class="ttl">Two pigeons arguing about geometry</span>
+        <span class="ink"><em class="b">blue</em> only</span>
+        <span class="ed">ed. 40</span>
+      </div>
+      <div class="row">
+        <span class="no">04</span>
+        <span class="ttl">The colour of a phone left face-down</span>
+        <span class="ink"><em>red</em> over <em class="b">blue</em></span>
+        <span class="ed">ed. 18</span>
+      </div>
+      <div class="row">
+        <span class="no">05</span>
+        <span class="ttl">Notes for a building that was never warm</span>
+        <span class="ink"><em>red</em> only</span>
+        <span class="ed">ed. 30</span>
+      </div>
+      <div class="row">
+        <span class="no">07</span>
+        <span class="ttl">Drum proof, kept by accident</span>
+        <span class="ink"><em>red</em> + <em class="b">blue</em></span>
+        <span class="ed">ed. 30</span>
+      </div>
+      <div class="row">
+        <span class="no">09</span>
+        <span class="ttl">Everyone has left, the kettle is still warm</span>
+        <span class="ink"><em class="b">blue</em> over <em>red</em></span>
+        <span class="ed">ed. 22</span>
+      </div>
+      <div class="row">
+        <span class="no">11</span>
+        <span class="ttl">A map of where the light usually sits</span>
+        <span class="ink"><em>red</em> only</span>
+        <span class="ed">ed. 35</span>
+      </div>
+      <div class="row">
+        <span class="no">14</span>
+        <span class="ttl">Last plate, printed while closing up</span>
+        <span class="ink"><em>red</em> + <em class="b">blue</em></span>
+        <span class="ed">ed. 12</span>
+      </div>
+    </section>
+
+    <section class="foot">
+      <div class="when rise">
+        <h3>Come at dusk</h3>
+        <dl>
+          <dt>When</dt><dd>14–16 November, 6pm til late</dd>
+          <dt>Where</dt><dd>Gutter Press, Unit 4, Salt Quarter</dd>
+          <dt>Entry</dt><dd>Free. Prints &amp; proofs for sale.</dd>
+          <dt>Press</dt><dd>One drum, two inks, a lot of cleaning rags.</dd>
+        </dl>
+      </div>
+      <div class="reserve rise">
+        <p>There is no booking system. There is a bench, a kettle, and a stack of
+          numbered prints. You take the one that won&rsquo;t leave you alone.</p>
+        <a class="go" href="#" onclick="return false">Hold a print → walk-in only</a>
+        <p class="small">This is a fictional show, made to test a layout. Nothing here
+          is for sale and no form sends anything anywhere.</p>
+      </div>
+    </section>
+
+    <div class="endline rise">
+      <span>Second Pressing — Gutter Press</span>
+      <span>Reference-first mimic test · v0.1</span>
+    </div>
+  </main>
+
+  <script>
+  (() => {
+    "use strict";
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---------- generative two-ink halftone plate (seeded, self-made) ---------- */
+    const cv = document.getElementById("plate");
+    const ctx = cv.getContext("2d");
+    let W = 0, H = 0, dpr = 1, t = 0, raf = 0;
+
+    // small seeded PRNG so the composition is repeatable (algorithmic-art principle)
+    function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let r=Math.imul(a^a>>>15,1|a);r=r+Math.imul(r^r>>>7,61|r)^r;return((r^r>>>14)>>>0)/4294967296;};}
+    const rnd = mulberry32(20261114);
+
+    // a few wandering "ink wells" — the field is the sum of soft blobs + a diagonal
+    const wells = Array.from({length:5}, () => ({
+      x: rnd(), y: rnd(),
+      r: 0.18 + rnd()*0.30,
+      px: (rnd()-0.5)*0.5, py:(rnd()-0.5)*0.5,
+      sp: 0.15 + rnd()*0.5,
+      sign: rnd() < 0.5 ? 1 : -1
+    }));
+
+    function size(){
+      const r = cv.getBoundingClientRect();
+      dpr = Math.min(devicePixelRatio || 1, 1.6);
+      W = Math.max(1, Math.round(r.width));
+      H = Math.max(1, Math.round(r.height));
+      cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    // field value in [0,1] at normalized (u,v), time tt
+    function field(u, v, tt){
+      let s = 0;
+      for(const w of wells){
+        const cx = w.x + Math.sin(tt*w.sp + w.px*6.28)*0.09*w.sign;
+        const cy = w.y + Math.cos(tt*w.sp*0.8 + w.py*6.28)*0.09;
+        const dx = u-cx, dy = v-cy;
+        const d2 = dx*dx + dy*dy;
+        s += Math.exp(-d2/(w.r*w.r));        // soft gaussian blob
+      }
+      // diagonal sweep + a couple of ripples for printed texture
+      s += 0.35*(0.5+0.5*Math.sin((u*3.0 + v*2.2) + tt*0.6));
+      s *= (0.62 + 0.55*(1.0 - v));          // heavier toward the bottom of the plate
+      return Math.max(0, Math.min(1, s*0.62));
+    }
+
+    function dotLayer(color, offx, offy, phase, step){
+      ctx.fillStyle = color;
+      for(let y = step*0.5; y < H; y += step){
+        for(let x = step*0.5; x < W; x += step){
+          const u = x/W, v = y/H;
+          const f = field(u, v, t + phase);
+          const r = (step*0.62) * f;
+          if(r < 0.35) continue;
+          ctx.beginPath();
+          ctx.arc(x + offx, y + offy, r, 0, 6.2832);
+          ctx.fill();
+        }
+      }
+    }
+
+    function frame(){
+      ctx.clearRect(0,0,W,H);
+      const step = Math.max(7, Math.min(11, W/52));
+      // two offset ink layers; CSS multiply blends the canvas onto paper,
+      // and overlapping dots stack into the darker "overprint"
+      ctx.globalAlpha = 0.92;
+      dotLayer("#ff4d63", -1.4, -1.0, 0.0, step);     // fluorescent red, registered slightly up-left
+      ctx.globalAlpha = 0.86;
+      dotLayer("#1f3bb0",  1.6,  1.3, 1.7, step);     // blue, registered slightly down-right
+      ctx.globalAlpha = 1;
+    }
+
+    function loop(){ t += 0.0045; frame(); raf = requestAnimationFrame(loop); }
+
+    function boot(){
+      size();
+      if(reduce){ t = 3.1; frame(); }
+      else { cancelAnimationFrame(raf); loop(); }
+    }
+    addEventListener("resize", () => { size(); if(reduce) frame(); }, {passive:true});
+    document.addEventListener("visibilitychange", () => {
+      if(document.hidden){ cancelAnimationFrame(raf); raf = 0; }
+      else if(!reduce && !raf){ loop(); }
+    });
+    boot();
+
+    /* ---------- restrained page-load reveal ---------- */
+    if(!reduce && "IntersectionObserver" in window){
+      const io = new IntersectionObserver((es)=>{
+        es.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add("in"), i*70); io.unobserve(e.target);} });
+      }, {threshold:0.12});
+      document.querySelectorAll(".rise").forEach(el=>io.observe(el));
+    } else {
+      document.querySelectorAll(".rise").forEach(el=>el.classList.add("in"));
+    }
+  })();
+  </script>
+</body>
+</html>
+</content>

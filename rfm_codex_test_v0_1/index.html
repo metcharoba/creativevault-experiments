@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signal Cabinet 23</title>
+  <link rel="stylesheet" href="assets/fonts.css">
+  <style>
+    :root {
+      --black: #080907;
+      --ink: #14140f;
+      --paper: #f2edc8;
+      --paper-dim: #d7d0a8;
+      --green: #8dfc62;
+      --cyan: #36d7ff;
+      --pink: #ff4eb8;
+      --yellow: #fff05a;
+      --red: #ff4d33;
+      --violet: #8b73ff;
+      --shadow: rgba(0, 0, 0, .72);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--black);
+      color: var(--paper);
+      font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        url("assets/noise_tile.svg"),
+        radial-gradient(circle at 12% 18%, rgba(255, 255, 255, .82) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 28%, rgba(255, 255, 255, .55) 0 1px, transparent 2px),
+        radial-gradient(circle at 38% 68%, rgba(141, 252, 98, .48) 0 1px, transparent 2px),
+        var(--black);
+      background-size: 32px 32px, 131px 97px, 173px 139px, 211px 167px, auto;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      background:
+        repeating-linear-gradient(to bottom, rgba(255,255,255,.06) 0 1px, transparent 1px 5px),
+        linear-gradient(90deg, rgba(255,78,184,.06), transparent 18%, transparent 72%, rgba(54,215,255,.06));
+      mix-blend-mode: screen;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(100%, 1580px);
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      min-height: clamp(820px, 100vh, 1080px);
+      padding: clamp(16px, 2vw, 28px);
+      overflow: hidden;
+      border-bottom: 5px solid var(--paper);
+      background:
+        linear-gradient(transparent 0 82%, rgba(0,0,0,.55)),
+        repeating-linear-gradient(90deg, transparent 0 118px, rgba(255,240,90,.08) 119px 120px);
+    }
+
+    .machine-bar {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: 1fr auto 1.2fr;
+      gap: 14px;
+      align-items: start;
+      text-transform: uppercase;
+      font-size: clamp(.64rem, .9vw, .78rem);
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .machine-bar > span,
+    .machine-bar > strong {
+      background: var(--ink);
+      border: 2px solid var(--paper-dim);
+      box-shadow: 5px 5px 0 var(--shadow);
+      padding: 8px 10px;
+      overflow-wrap: anywhere;
+    }
+
+    .machine-bar strong {
+      color: var(--yellow);
+      transform: rotate(-1.2deg);
+    }
+
+    .machine-bar span:last-child {
+      justify-self: end;
+      color: var(--cyan);
+      transform: rotate(.6deg);
+    }
+
+    .stage {
+      position: relative;
+      min-height: calc(clamp(820px, 100vh, 1080px) - 88px);
+    }
+
+    .title-rack {
+      position: absolute;
+      left: clamp(8px, 3vw, 48px);
+      top: 13vh;
+      z-index: 4;
+      width: min(40vw, 470px);
+      color: var(--paper);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Micro 5", "IBM Plex Mono", monospace;
+      font-size: clamp(5.2rem, 11vw, 13rem);
+      line-height: .58;
+      font-weight: 400;
+      color: var(--yellow);
+      text-shadow: 5px 0 0 var(--pink), -5px 0 0 var(--cyan), 0 8px 0 #000;
+      text-transform: uppercase;
+      max-width: 7ch;
+    }
+
+    .title-rack p {
+      width: min(330px, 70vw);
+      margin: 24px 0 0;
+      padding: 10px 12px;
+      background: var(--paper);
+      color: var(--ink);
+      border-left: 10px solid var(--red);
+      box-shadow: 10px 10px 0 var(--shadow);
+      font-size: clamp(.78rem, 1vw, .95rem);
+      line-height: 1.35;
+      transform: rotate(-1.6deg);
+    }
+
+    .specimen {
+      position: absolute;
+      z-index: 2;
+      left: 45%;
+      top: 8vh;
+      width: min(26vw, 330px);
+      min-width: 235px;
+      padding: 12px;
+      background: #0d0d0a;
+      border: 4px solid var(--paper);
+      box-shadow: 18px 22px 0 rgba(0,0,0,.65);
+      transform: rotate(.8deg);
+    }
+
+    .specimen::before {
+      content: "EXTERNAL SIGNAL SPECIMEN";
+      display: block;
+      margin: -30px 0 8px 24px;
+      width: fit-content;
+      padding: 5px 8px;
+      background: var(--green);
+      color: var(--ink);
+      font-size: .7rem;
+      font-weight: 700;
+      transform: rotate(-2deg);
+    }
+
+    .specimen-window {
+      height: clamp(520px, 68vh, 690px);
+      min-height: 520px;
+      overflow: hidden;
+      border: 2px solid #343426;
+      background: #050504;
+      display: grid;
+      place-items: center;
+    }
+
+    .specimen img {
+      width: 74%;
+      image-rendering: pixelated;
+      filter: saturate(1.15) contrast(1.08);
+    }
+
+    .disc-object {
+      position: absolute;
+      z-index: 1;
+      right: clamp(-90px, 3vw, 44px);
+      top: 18vh;
+      width: min(39vw, 520px);
+      min-width: 280px;
+      transform: rotate(9deg);
+      filter: drop-shadow(18px 18px 0 rgba(0,0,0,.6));
+    }
+
+    .route-sheet {
+      position: absolute;
+      z-index: 1;
+      right: 20vw;
+      bottom: 5vh;
+      width: min(31vw, 420px);
+      min-width: 270px;
+      transform: rotate(-7deg);
+      border: 3px solid var(--ink);
+      box-shadow: -12px 14px 0 rgba(0,0,0,.68);
+    }
+
+    .node {
+      position: absolute;
+      z-index: 5;
+      width: clamp(140px, 13vw, 210px);
+      color: var(--paper);
+      font-size: .72rem;
+      line-height: 1.22;
+      text-transform: uppercase;
+    }
+
+    .node b {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--yellow);
+      font-size: .84rem;
+    }
+
+    .node-a {
+      padding: 10px;
+      background: var(--ink);
+      border: 2px solid var(--paper);
+      clip-path: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 0 100%);
+      box-shadow: 8px 8px 0 var(--pink);
+    }
+
+    .node-b {
+      padding: 9px 11px 12px;
+      background: var(--paper);
+      color: var(--ink);
+      border-left: 9px solid var(--cyan);
+      box-shadow: 11px 0 0 var(--green), 11px 11px 0 var(--shadow);
+    }
+
+    .node-b b {
+      color: var(--red);
+    }
+
+    .node-c {
+      padding: 0 0 8px;
+      color: var(--green);
+      border-bottom: 3px solid var(--green);
+      text-shadow: 2px 2px 0 #000;
+    }
+
+    .node-c::before {
+      content: "";
+      display: block;
+      height: 26px;
+      margin-bottom: 7px;
+      background:
+        repeating-linear-gradient(90deg, var(--yellow) 0 8px, var(--black) 8px 13px),
+        var(--yellow);
+      border: 2px solid var(--yellow);
+    }
+
+    .n1 { left: 35%; top: 16vh; transform: rotate(-6deg); }
+    .n2 { left: 62%; top: 13vh; transform: rotate(5deg); }
+    .n3 { left: 28%; bottom: 17vh; transform: rotate(2deg); }
+    .n4 { right: 8%; top: 55vh; transform: rotate(-4deg); }
+    .n5 { left: 11%; bottom: 8vh; transform: rotate(7deg); }
+    .n6 { right: 29%; bottom: 2vh; transform: rotate(-1deg); }
+
+    .connector {
+      position: absolute;
+      z-index: 0;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, rgba(255,240,90,.65) 0 13px, transparent 13px 24px);
+      transform-origin: left center;
+      filter: drop-shadow(0 0 5px rgba(255,240,90,.8));
+    }
+
+    .c1 { left: 41%; top: 31vh; width: 28vw; transform: rotate(-22deg); }
+    .c2 { left: 38%; top: 61vh; width: 31vw; transform: rotate(20deg); }
+    .c3 { left: 20%; top: 76vh; width: 25vw; transform: rotate(-14deg); }
+
+    .ticker {
+      position: relative;
+      z-index: 6;
+      margin: -1px 0 0;
+      padding: 7px 0;
+      overflow: hidden;
+      color: var(--black);
+      background: var(--green);
+      border-block: 3px solid var(--ink);
+      white-space: nowrap;
+      font-size: .76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .ticker span {
+      display: inline-block;
+      min-width: 100%;
+      padding-left: 100%;
+      animation: crawl 25s linear infinite;
+    }
+
+    @keyframes crawl {
+      to { transform: translateX(-100%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker span { animation: none; padding-left: 16px; }
+    }
+
+    .band {
+      position: relative;
+      padding: clamp(34px, 5vw, 72px) clamp(16px, 3vw, 42px);
+      border-bottom: 4px solid var(--paper);
+      background:
+        url("assets/noise_tile.svg"),
+        linear-gradient(90deg, rgba(255,240,90,.08), transparent 28%, rgba(54,215,255,.08) 74%, transparent),
+        #12130f;
+    }
+
+    .band.alt {
+      background:
+        url("assets/noise_tile.svg"),
+        repeating-linear-gradient(0deg, rgba(242,237,200,.08) 0 2px, transparent 2px 18px),
+        #e5dfba;
+      color: var(--ink);
+    }
+
+    .section-label {
+      display: inline-block;
+      margin: 0 0 26px;
+      padding: 9px 12px;
+      background: var(--pink);
+      color: var(--ink);
+      font-size: .74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+      box-shadow: 6px 6px 0 rgba(0,0,0,.4);
+    }
+
+    .ledger {
+      display: grid;
+      grid-template-columns: 1.1fr .8fr 1fr;
+      gap: clamp(14px, 2vw, 28px);
+      align-items: start;
+    }
+
+    .slab {
+      min-height: 270px;
+      padding: clamp(16px, 2vw, 28px);
+      border: 3px solid currentColor;
+      background: rgba(8,9,7,.82);
+      box-shadow: 12px 14px 0 rgba(0,0,0,.5);
+    }
+
+    .slab h2,
+    .slab h3 {
+      margin: 0 0 16px;
+      font-family: "Micro 5", "IBM Plex Mono", monospace;
+      font-size: clamp(2.9rem, 6vw, 6.8rem);
+      line-height: .74;
+      font-weight: 400;
+      color: var(--yellow);
+      text-transform: uppercase;
+    }
+
+    .slab p,
+    .slab li {
+      line-height: 1.45;
+      font-size: clamp(.85rem, 1vw, .98rem);
+    }
+
+    .slab ul {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .slab li {
+      margin: 0;
+      padding: 9px 0;
+      border-top: 1px dashed rgba(242,237,200,.52);
+    }
+
+    .slab.offset {
+      transform: rotate(1.7deg);
+      background: var(--paper);
+      color: var(--ink);
+      box-shadow: -13px 13px 0 var(--cyan);
+    }
+
+    .slab.offset h3 {
+      color: var(--red);
+      text-shadow: 3px 0 0 var(--yellow);
+    }
+
+    .slab.bleed {
+      padding: 0;
+      border-color: var(--green);
+      overflow: hidden;
+      transform: rotate(-1deg);
+    }
+
+    .slab.bleed img {
+      width: 118%;
+      max-width: none;
+      margin: -20px 0 0 -42px;
+    }
+
+    .slab.bleed p {
+      margin: 0;
+      padding: 14px 18px 18px;
+      color: var(--green);
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: .9fr 1.2fr;
+      gap: clamp(18px, 3vw, 46px);
+      align-items: center;
+    }
+
+    .large-disc {
+      width: min(92vw, 620px);
+      transform: rotate(-11deg);
+      filter: drop-shadow(18px 24px 0 rgba(0,0,0,.36));
+    }
+
+    .index-strip {
+      display: grid;
+      gap: 14px;
+    }
+
+    .index-row {
+      display: grid;
+      grid-template-columns: minmax(80px, .45fr) 1fr minmax(74px, .3fr);
+      gap: 12px;
+      align-items: center;
+      padding: 10px;
+      border-top: 2px solid var(--ink);
+      font-size: .86rem;
+      text-transform: uppercase;
+    }
+
+    .index-row:nth-child(2) {
+      background: var(--yellow);
+      transform: translateX(-24px) rotate(-.6deg);
+    }
+
+    .index-row:nth-child(3) {
+      border: 2px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--pink);
+      transform: translateX(16px);
+    }
+
+    .index-row:nth-child(4) {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--green);
+      transform: rotate(.9deg);
+    }
+
+    .index-row:nth-child(5) {
+      border-left: 16px solid var(--cyan);
+      background: rgba(255,255,255,.26);
+    }
+
+    .readout {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .chip {
+      min-height: 72px;
+      padding: 8px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      font-size: .69rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .chip:nth-child(3n) {
+      grid-column: span 3;
+      background: var(--green);
+      box-shadow: 6px 6px 0 var(--shadow);
+      transform: rotate(-1deg);
+    }
+
+    .chip:nth-child(3n + 1) {
+      grid-column: span 4;
+      background: #11120d;
+      color: var(--yellow);
+      border-color: var(--yellow);
+      transform: translateY(12px);
+    }
+
+    .chip:nth-child(3n + 2) {
+      grid-column: span 5;
+      background: var(--cyan);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+    }
+
+    .closing {
+      min-height: clamp(520px, 58vh, 760px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(20px, 3vw, 50px);
+      align-items: end;
+    }
+
+    .closing h2 {
+      margin: 0;
+      font-family: "Micro 5", "IBM Plex Mono", monospace;
+      font-size: clamp(5rem, 12vw, 14rem);
+      line-height: .6;
+      font-weight: 400;
+      color: var(--green);
+      text-transform: uppercase;
+      text-shadow: 6px 0 0 var(--red), 0 9px 0 #000;
+    }
+
+    .closing-note {
+      max-width: 560px;
+      padding: clamp(16px, 2vw, 26px);
+      background: var(--paper);
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-right: 22px solid var(--pink);
+      box-shadow: -12px 12px 0 rgba(0,0,0,.5);
+      transform: rotate(.8deg);
+    }
+
+    .closing-note p {
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+      .machine-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .machine-bar span:last-child {
+        justify-self: start;
+      }
+
+      .stage {
+        min-height: auto;
+        display: grid;
+        gap: 22px;
+        padding-top: 22px;
+      }
+
+      .title-rack,
+      .specimen,
+      .disc-object,
+      .route-sheet,
+      .node,
+      .connector {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .title-rack {
+        max-width: 680px;
+      }
+
+      h1 {
+        max-width: 5ch;
+        font-size: clamp(5.6rem, 24vw, 10rem);
+      }
+
+      .specimen {
+        width: min(100%, 430px);
+        justify-self: end;
+      }
+
+      .disc-object {
+        width: min(100%, 460px);
+        justify-self: start;
+        margin-top: -60px;
+      }
+
+      .route-sheet {
+        width: min(100%, 520px);
+        justify-self: center;
+      }
+
+      .node {
+        width: min(100%, 480px);
+      }
+
+      .n1,
+      .n2,
+      .n3,
+      .n4,
+      .n5,
+      .n6 {
+        transform: rotate(0);
+      }
+
+      .ledger,
+      .route-grid,
+      .closing {
+        grid-template-columns: 1fr;
+      }
+
+      .readout {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      .chip:nth-child(n) {
+        grid-column: span 3;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        padding: 12px;
+      }
+
+      .title-rack p {
+        width: 100%;
+      }
+
+      .specimen-window {
+        min-height: 410px;
+        height: clamp(410px, 58vh, 640px);
+      }
+
+      .slab h2,
+      .slab h3 {
+        font-size: clamp(3.1rem, 18vw, 5.6rem);
+      }
+
+      .index-row {
+        grid-template-columns: 1fr;
+      }
+
+      .readout {
+        grid-template-columns: 1fr;
+      }
+
+      .chip:nth-child(n) {
+        grid-column: auto;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" aria-labelledby="main-title">
+      <div class="machine-bar">
+        <span>Optical teaching station / no network uplink</span>
+        <strong>Cabinet 23 is awake</strong>
+        <span>Source plate: Arecibo / copied under recorded license</span>
+      </div>
+
+      <div class="stage">
+        <div class="connector c1"></div>
+        <div class="connector c2"></div>
+        <div class="connector c3"></div>
+
+        <div class="title-rack">
+          <h1 id="main-title">Signal Cabinet 23</h1>
+          <p>Educational multimedia console for messages that were never meant to become a homepage.</p>
+        </div>
+
+        <figure class="specimen">
+          <div class="specimen-window">
+            <img src="assets/arecibo_message.svg" alt="Arecibo message diagram used as a signal specimen">
+          </div>
+        </figure>
+
+        <img class="disc-object" src="assets/kiosk_disc.svg" alt="Self-authored CD-ROM signal plate">
+        <img class="route-sheet" src="assets/pulsar_sheet.svg" alt="Self-authored pulsar direction sheet">
+
+        <div class="node node-a n1">
+          <b>Reader arm</b>
+          External diagram is not garnish; it is the first object the interface answers to.
+        </div>
+        <div class="node node-b n2">
+          <b>Lesson slot</b>
+          Choose a fragment by misreading its material: scanline, label, cut, bleed.
+        </div>
+        <div class="node node-c n3">
+          <b>Boot plate</b>
+          The cabinet teaches by arranging evidence, not by explaining benefits.
+        </div>
+        <div class="node node-a n4">
+          <b>Untranslated</b>
+          1679 bits, false color, classroom anxiety, no smooth onboarding.
+        </div>
+        <div class="node node-b n5">
+          <b>Drawer C</b>
+          This label is a destination. It refuses to become a rounded button.
+        </div>
+        <div class="node node-c n6">
+          <b>Index fault</b>
+          Same-kind nodes use different frames, shadows, labels, and surface logic.
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <span>TRACK 02: PULSE MAP / TRACK 07: CLASSROOM PLATE / TRACK 11: WRONG DECODE / TRACK 23: RETURN TO CABINET / </span>
+    </div>
+
+    <section class="band" aria-labelledby="drawer-title">
+      <span class="section-label">Drawer contents / observed through bad glass</span>
+      <div class="ledger">
+        <article class="slab">
+          <h2 id="drawer-title">Not a funnel</h2>
+          <p>The page is built as a navigable object. The first screen borrows the spatial constellation of the lead reference, but swaps mascot planets for source material, labels, and scratched teaching hardware.</p>
+          <ul>
+            <li>Central object replaces centered hero copy.</li>
+            <li>Destinations orbit as fragments, not cards.</li>
+            <li>Explanatory text stays small and operational.</li>
+          </ul>
+        </article>
+
+        <article class="slab offset">
+          <h3>Material first</h3>
+          <p>The Arecibo SVG, local fonts, disc plate, and pulsar sheet were chosen before layout. Their ratios and textures determine the composition instead of decorating it after the fact.</p>
+          <ul>
+            <li>Diagram: tall specimen column.</li>
+            <li>Disc: chromatic counterweight.</li>
+            <li>Sheet: low-tech knowledge map.</li>
+          </ul>
+        </article>
+
+        <article class="slab bleed">
+          <img src="assets/pulsar_sheet.svg" alt="Pulsar sheet cropped as a bleed object">
+          <p>Bleed treatment: the diagram is allowed to escape its frame, so repeated objects do not share the same polite border.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="band alt" aria-labelledby="route-title">
+      <span class="section-label">Route table / the software becomes furniture</span>
+      <div class="route-grid">
+        <img class="large-disc" src="assets/kiosk_disc.svg" alt="Large optical disc plate">
+        <div>
+          <div class="slab offset">
+            <h3 id="route-title">Four wrong ways to read it</h3>
+            <p>The console does not present features. It presents handling instructions for a difficult object.</p>
+          </div>
+          <div class="index-strip" aria-label="Signal reading routes">
+            <div class="index-row"><b>01 / color</b><span>False-color blocks become classroom categories.</span><em>visible</em></div>
+            <div class="index-row"><b>04 / cut</b><span>Frames clip differently, like damaged acetate overlays.</span><em>jagged</em></div>
+            <div class="index-row"><b>09 / drift</b><span>Labels do not align because the cabinet is a scanned object.</span><em>loose</em></div>
+            <div class="index-row"><b>15 / return</b><span>Every lower panel keeps the same machine grammar.</span><em>locked</em></div>
+            <div class="index-row"><b>23 / blank</b><span>Empty space is navigational space, not premium minimalism.</span><em>open</em></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="readout" aria-label="Non-uniform readout chips">
+        <div class="chip">node: hard-frame / source column / yellow caption</div>
+        <div class="chip">node: paper-offset / cyan spine / red heading</div>
+        <div class="chip">node: no-box / scan stripe / green terminal</div>
+        <div class="chip">module: cut-corner / shadow east</div>
+        <div class="chip">module: bleed crop / no safe margin</div>
+        <div class="chip">module: rotated plate / optical glare</div>
+      </div>
+    </section>
+
+    <section class="band" aria-labelledby="closing-title">
+      <div class="closing">
+        <h2 id="closing-title">Do not center the lesson</h2>
+        <div class="closing-note">
+          <p>This build keeps the same visual language from top to bottom: external diagram, authored artifacts, dither, scanlines, broken frames, and machine labels. The result is closer to a strange educational kiosk than a promotional landing page.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="940" height="620" viewBox="0 0 940 620" role="img" aria-label="Self-authored pulsar direction sheet">
+  <rect width="940" height="620" fill="#f3efcf"/>
+  <g opacity=".42" stroke="#13130f" stroke-width="1">
+    <path d="M40 48h860M40 112h860M40 176h860M40 240h860M40 304h860M40 368h860M40 432h860M40 496h860M40 560h860"/>
+    <path d="M68 24v572M148 24v572M228 24v572M308 24v572M388 24v572M468 24v572M548 24v572M628 24v572M708 24v572M788 24v572M868 24v572"/>
+  </g>
+  <g transform="translate(463 314)" stroke="#10100d" stroke-linecap="square">
+    <circle r="10" fill="#10100d"/>
+    <path d="M0 0L-356-169M0 0L-257 220M0 0L312-212M0 0L365 142M0 0L-22-275M0 0L128 250M0 0L-401 27M0 0L405-14M0 0L-181-91M0 0L223 64M0 0L-63 150M0 0L74-147" fill="none" stroke-width="5"/>
+    <g stroke-width="2" fill="none">
+      <path d="M-356-169l28-10M-257 220l-5-30M312-212l-21-22M365 142l23-18M-22-275l-25-1M128 250l21-19M-401 27l-15-25M405-14l-12-29M-181-91l-2 26M223 64l16 23M-63 150l-25 8M74-147l25-8"/>
+    </g>
+  </g>
+  <g font-family="IBM Plex Mono, monospace" font-size="19" font-weight="700" fill="#10100d">
+    <text x="42" y="42">DIRECTION SHEET / SOURCE UNKNOWN</text>
+    <text x="628" y="592">CALIBRATION: FALSE COLOR</text>
+    <text x="82" y="522" transform="rotate(-7 82 522)">PULSE 0110 / 9.7 SEC</text>
+    <text x="620" y="126" transform="rotate(5 620 126)">PULSE 1101 / 4.2 SEC</text>
+    <text x="512" y="348">LOCAL ORIGIN?</text>
+  </g>
+  <g fill="#ff4eb8">
+    <rect x="37" y="565" width="248" height="14"/>
+    <rect x="720" y="28" width="158" height="14"/>
+  </g>
+  <g fill="#36d7ff">
+    <rect x="40" y="78" width="95" height="11"/>
+    <rect x="760" y="532" width="118" height="11"/>
+  </g>
+  <g fill="#8dfc62">
+    <rect x="810" y="78" width="36" height="36"/>
+    <rect x="86" y="312" width="26" height="26"/>
+  </g>
+</svg>
