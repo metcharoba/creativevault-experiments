@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>鳥の声の時刻分布</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@300;500&family=IBM+Plex+Mono:wght@300;500&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; }
+  body {
+    background: #E8E6DD;
+    color: #1C2A28;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    position: relative;
+    padding: 60px 64px 50px;
+  }
+  .rule-top {
+    border-top: 2px solid #1C2A28;
+    padding-top: 14px;
+  }
+  .title-block {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    margin-bottom: 6px;
+  }
+  .title-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 62px;
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: 0.02em;
+  }
+  .title-en {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: #8E8B7E;
+    text-align: right;
+    line-height: 1.6;
+  }
+  .deck {
+    border-top: 1px solid #8E8B7E;
+    border-bottom: 1px solid #8E8B7E;
+    padding: 8px 0;
+    margin: 12px 0 26px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+  }
+  .deck .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.14em;
+    color: #8E8B7E;
+    font-size: 11px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px 0;
+    align-items: start;
+    justify-items: center;
+    margin-bottom: 18px;
+  }
+  .disc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+  .disc svg { display: block; }
+  .disc-no {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #8E8B7E;
+  }
+  .species-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 500;
+    font-size: 17px;
+    margin-top: 8px;
+    text-align: center;
+  }
+  .species-en {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    color: #8E8B7E;
+    margin-top: 3px;
+    text-align: center;
+  }
+  .species-note {
+    font-size: 10.5px;
+    margin-top: 6px;
+    text-align: center;
+    max-width: 200px;
+    line-height: 1.45;
+    color: #1C2A28;
+  }
+  /* offset second row slightly (non-uniform placement) */
+  .disc--lift { transform: translateY(-12px); }
+  .disc--drop { transform: translateY(8px); }
+  /* per-disc label-side variant: put label to the side */
+  .disc--side { flex-direction: row; align-items: flex-start; gap: 10px; }
+  .disc--side .label-stack { text-align: left; margin-top: 18px; }
+  .disc--side .species-jp { text-align: left; margin-top: 0; }
+  .disc--side .species-en { text-align: left; }
+  .disc--side .species-note { text-align: left; max-width: 110px; }
+  .method {
+    margin: 14px 0 0;
+  }
+  .method .marker {
+    display: inline-block;
+    border-top: 2px solid #B4593A;
+    padding-top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: #B4593A;
+    margin-bottom: 12px;
+    min-width: 80px;
+  }
+  .method-text {
+    font-size: 11.5px;
+    line-height: 1.7;
+    max-width: 720px;
+  }
+  .footer {
+    position: absolute;
+    bottom: 24px;
+    left: 64px;
+    right: 64px;
+    border-top: 1px solid #8E8B7E;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: #8E8B7E;
+  }
+</style>
+</head>
+<body>
+  <section class="rule-top">
+    <header class="title-block">
+      <div class="title-jp">鳥の声の<br>時刻分布</div>
+      <div class="title-en">DIURNAL VOCALIZATION CHART<br>SPECIES &times; HOUR &mdash; FIG. 01—08</div>
+    </header>
+    <div class="deck">
+      <span>都内 / ある一日 / 観測 8 種 / 1 点 = ある時間幅で確認された鳴き声</span>
+      <span class="mono">N = 08</span>
+    </div>
+  </section>
+
+  <div class="grid">
+<div class="disc"><span class="disc-no">FIG. 01</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="130.47" y1="9.95" x2="131.24" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="35.42" x2="176.70" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="200.05" y1="79.53" x2="202.94" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="200.05" y1="130.47" x2="202.94" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="174.58" x2="176.70" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="130.47" y1="200.05" x2="131.24" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="79.53" y1="200.05" x2="78.76" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="174.58" x2="33.30" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="9.95" y1="130.47" x2="7.06" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="9.95" y1="79.53" x2="7.06" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="35.42" x2="33.30" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="79.53" y1="9.95" x2="78.76" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <path d="M 128.01 75.01 L 131.34 70.68 A 43.26 43.26 0 0 1 139.32 78.66 L 134.99 81.99 A 37.80 37.80 0 0 0 128.01 75.01 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 134.99 81.99 L 152.32 68.69 A 59.64 59.64 0 0 1 160.10 82.18 L 139.92 90.53 A 37.80 37.80 0 0 0 134.99 81.99 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 90.53 L 175.23 75.91 A 76.02 76.02 0 0 1 180.37 95.08 L 142.48 100.07 A 37.80 37.80 0 0 0 139.92 90.53 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 100.07 L 191.20 93.65 A 86.94 86.94 0 0 1 191.20 116.35 L 142.48 109.93 A 37.80 37.80 0 0 0 142.48 100.07 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 109.93 L 188.49 115.99 A 84.21 84.21 0 0 1 182.80 137.23 L 139.92 119.47 A 37.80 37.80 0 0 0 142.48 109.93 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 119.47 L 170.19 132.00 A 70.56 70.56 0 0 1 160.98 147.95 L 134.99 128.01 A 37.80 37.80 0 0 0 139.92 119.47 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 134.99 128.01 L 156.65 144.63 A 65.10 65.10 0 0 1 144.63 156.65 L 128.01 134.99 A 37.80 37.80 0 0 0 134.99 128.01 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 128.01 134.99 L 141.31 152.32 A 59.64 59.64 0 0 1 127.82 160.10 L 119.47 139.92 A 37.80 37.80 0 0 0 128.01 134.99 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 119.47 139.92 L 125.73 155.06 A 54.18 54.18 0 0 1 112.07 158.72 L 109.93 142.48 A 37.80 37.80 0 0 0 119.47 139.92 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 109.93 142.48 L 111.36 153.30 A 48.72 48.72 0 0 1 98.64 153.30 L 100.07 142.48 A 37.80 37.80 0 0 0 109.93 142.48 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 100.07 142.48 L 98.64 153.30 A 48.72 48.72 0 0 1 86.36 150.01 L 90.53 139.92 A 37.80 37.80 0 0 0 100.07 142.48 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 90.53 139.92 L 84.27 155.06 A 54.18 54.18 0 0 1 72.02 147.98 L 81.99 134.99 A 37.80 37.80 0 0 0 90.53 139.92 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 81.99 134.99 L 68.69 152.32 A 59.64 59.64 0 0 1 57.68 141.31 L 75.01 128.01 A 37.80 37.80 0 0 0 81.99 134.99 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 75.01 128.01 L 51.19 146.29 A 67.83 67.83 0 0 1 42.33 130.96 L 70.08 119.47 A 37.80 37.80 0 0 0 75.01 128.01 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 119.47 L 37.29 133.05 A 73.29 73.29 0 0 1 32.34 114.57 L 67.52 109.93 A 37.80 37.80 0 0 0 70.08 119.47 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 109.93 L 40.46 113.50 A 65.10 65.10 0 0 1 40.46 96.50 L 67.52 100.07 A 37.80 37.80 0 0 0 67.52 109.93 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 100.07 L 51.28 97.93 A 54.18 54.18 0 0 1 54.94 84.27 L 70.08 90.53 A 37.80 37.80 0 0 0 67.52 100.07 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 90.53 L 65.03 88.45 A 43.26 43.26 0 0 1 70.68 78.66 L 75.01 81.99 A 37.80 37.80 0 0 0 70.08 90.53 Z" fill="#1C2A28" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+  </svg><div class="label-stack"><div class="species-jp">スズメ</div><div class="species-en">PASSER MONTANUS</div><div class="species-note">早朝から続く声。昼に一度静かになり夕にまた戻る。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 02</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="130.47" y1="9.95" x2="131.24" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="35.42" x2="176.70" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="200.05" y1="79.53" x2="202.94" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="200.05" y1="130.47" x2="202.94" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="174.58" x2="176.70" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="130.47" y1="200.05" x2="131.24" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="79.53" y1="200.05" x2="78.76" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="174.58" x2="33.30" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="9.95" y1="130.47" x2="7.06" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="9.95" y1="79.53" x2="7.06" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="35.42" x2="33.30" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="79.53" y1="9.95" x2="78.76" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <path d="M 134.99 81.99 L 143.65 75.34 A 48.72 48.72 0 0 1 150.01 86.36 L 139.92 90.53 A 37.80 37.80 0 0 0 134.99 81.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 90.53 L 165.14 80.09 A 65.10 65.10 0 0 1 169.54 96.50 L 142.48 100.07 A 37.80 37.80 0 0 0 139.92 90.53 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 100.07 L 177.66 95.43 A 73.29 73.29 0 0 1 177.66 114.57 L 142.48 109.93 A 37.80 37.80 0 0 0 142.48 100.07 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 109.93 L 185.78 115.64 A 81.48 81.48 0 0 1 180.28 136.18 L 139.92 119.47 A 37.80 37.80 0 0 0 142.48 109.93 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 119.47 L 187.84 139.32 A 89.67 89.67 0 0 1 176.14 159.59 L 134.99 128.01 A 37.80 37.80 0 0 0 139.92 119.47 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 134.99 128.01 L 167.48 152.94 A 78.75 78.75 0 0 1 152.94 167.48 L 128.01 134.99 A 37.80 37.80 0 0 0 134.99 128.01 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 128.01 134.99 L 142.97 154.48 A 62.37 62.37 0 0 1 128.87 162.62 L 119.47 139.92 A 37.80 37.80 0 0 0 128.01 134.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 119.47 139.92 L 125.73 155.06 A 54.18 54.18 0 0 1 112.07 158.72 L 109.93 142.48 A 37.80 37.80 0 0 0 119.47 139.92 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 109.93 142.48 L 113.50 169.54 A 65.10 65.10 0 0 1 96.50 169.54 L 100.07 142.48 A 37.80 37.80 0 0 0 109.93 142.48 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 100.07 142.48 L 95.08 180.37 A 76.02 76.02 0 0 1 75.91 175.23 L 90.53 139.92 A 37.80 37.80 0 0 0 100.07 142.48 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 90.53 139.92 L 72.77 182.80 A 84.21 84.21 0 0 1 53.74 171.81 L 81.99 134.99 A 37.80 37.80 0 0 0 90.53 139.92 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 81.99 134.99 L 58.72 165.31 A 76.02 76.02 0 0 1 44.69 151.28 L 75.01 128.01 A 37.80 37.80 0 0 0 81.99 134.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 75.01 128.01 L 53.35 144.63 A 65.10 65.10 0 0 1 44.86 129.91 L 70.08 119.47 A 37.80 37.80 0 0 0 75.01 128.01 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 119.47 L 49.90 127.82 A 59.64 59.64 0 0 1 45.87 112.78 L 67.52 109.93 A 37.80 37.80 0 0 0 70.08 119.47 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 109.93 L 51.28 112.07 A 54.18 54.18 0 0 1 51.28 97.93 L 67.52 100.07 A 37.80 37.80 0 0 0 67.52 109.93 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 100.07 L 56.70 98.64 A 48.72 48.72 0 0 1 59.99 86.36 L 70.08 90.53 A 37.80 37.80 0 0 0 67.52 100.07 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 90.53 L 67.56 89.49 A 40.53 40.53 0 0 1 72.85 80.33 L 75.01 81.99 A 37.80 37.80 0 0 0 70.08 90.53 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+  </svg><div class="label-stack"><div class="species-jp">ヒヨドリ</div><div class="species-en">HYPSIPETES AMAUROTIS</div><div class="species-note">午前と午後に大きな声。昼に一度落ち、夕方に再び。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 03</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <line x1="131.73" y1="78.27" x2="139.45" y2="70.55" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="137.74" y1="86.10" x2="166.11" y2="69.72" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="141.51" y1="95.22" x2="191.61" y2="81.79" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="142.80" y1="105.00" x2="186.48" y2="105.00" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="141.51" y1="114.78" x2="170.52" y2="122.56" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="137.74" y1="123.90" x2="156.65" y2="134.82" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="131.73" y1="131.73" x2="143.31" y2="143.31" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="123.90" y1="137.74" x2="129.36" y2="147.19" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="114.78" y1="141.51" x2="117.61" y2="152.06" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="105.00" y1="142.80" x2="105.00" y2="153.72" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="95.22" y1="141.51" x2="91.68" y2="154.70" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="86.10" y1="137.74" x2="77.91" y2="151.92" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="78.27" y1="131.73" x2="60.90" y2="149.10" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="72.26" y1="123.90" x2="41.53" y2="141.64" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="68.49" y1="114.78" x2="23.66" y2="126.80" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="67.20" y1="105.00" x2="15.33" y2="105.00" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="68.49" y1="95.22" x2="31.57" y2="85.32" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="72.26" y1="86.10" x2="58.08" y2="77.91" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+    <line x1="78.27" y1="78.27" x2="74.41" y2="74.41" stroke="#1C2A28" stroke-width="1.6" stroke-linecap="round" />
+  </svg><div class="label-stack"><div class="species-jp">ハシブトガラス</div><div class="species-en">CORVUS MACRORHYNCHOS</div><div class="species-note">夜明けと日暮れの薄明に二度の山。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 04</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="130.47" y1="9.95" x2="131.24" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="35.42" x2="176.70" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="200.05" y1="79.53" x2="202.94" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="200.05" y1="130.47" x2="202.94" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="174.58" x2="176.70" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="130.47" y1="200.05" x2="131.24" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="79.53" y1="200.05" x2="78.76" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="174.58" x2="33.30" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="9.95" y1="130.47" x2="7.06" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="9.95" y1="79.53" x2="7.06" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="35.42" x2="33.30" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="79.53" y1="9.95" x2="78.76" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <circle cx="141.20" cy="84.10" r="1.4" fill="#1C2A28" />
+    <circle cx="161.38" cy="72.45" r="1.4" fill="#1C2A28" />
+    <circle cx="181.56" cy="60.80" r="1.4" fill="#1C2A28" />
+    <circle cx="145.38" cy="94.18" r="1.4" fill="#1C2A28" />
+    <circle cx="154.38" cy="91.77" r="1.4" fill="#1C2A28" />
+    <circle cx="163.38" cy="89.36" r="1.4" fill="#1C2A28" />
+    <circle cx="172.38" cy="86.94" r="1.4" fill="#1C2A28" />
+    <circle cx="181.39" cy="84.53" r="1.4" fill="#1C2A28" />
+    <circle cx="190.39" cy="82.12" r="1.4" fill="#1C2A28" />
+    <circle cx="146.80" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="153.46" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="160.11" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="166.77" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="173.43" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="180.09" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="186.74" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="193.40" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="145.38" cy="115.82" r="1.4" fill="#1C2A28" />
+    <circle cx="152.88" cy="117.83" r="1.4" fill="#1C2A28" />
+    <circle cx="160.38" cy="119.84" r="1.4" fill="#1C2A28" />
+    <circle cx="167.88" cy="121.85" r="1.4" fill="#1C2A28" />
+    <circle cx="175.38" cy="123.86" r="1.4" fill="#1C2A28" />
+    <circle cx="182.89" cy="125.87" r="1.4" fill="#1C2A28" />
+    <circle cx="190.39" cy="127.88" r="1.4" fill="#1C2A28" />
+    <circle cx="141.20" cy="125.90" r="1.4" fill="#1C2A28" />
+    <circle cx="151.29" cy="131.72" r="1.4" fill="#1C2A28" />
+    <circle cx="161.38" cy="137.55" r="1.4" fill="#1C2A28" />
+    <circle cx="171.47" cy="143.38" r="1.4" fill="#1C2A28" />
+    <circle cx="181.56" cy="149.20" r="1.4" fill="#1C2A28" />
+    <circle cx="134.56" cy="134.56" r="1.4" fill="#1C2A28" />
+    <circle cx="145.54" cy="145.54" r="1.4" fill="#1C2A28" />
+    <circle cx="156.52" cy="156.52" r="1.4" fill="#1C2A28" />
+    <circle cx="167.51" cy="167.51" r="1.4" fill="#1C2A28" />
+    <circle cx="125.90" cy="141.20" r="1.4" fill="#1C2A28" />
+    <circle cx="133.67" cy="154.65" r="1.4" fill="#1C2A28" />
+    <circle cx="141.43" cy="168.10" r="1.4" fill="#1C2A28" />
+    <circle cx="149.20" cy="181.56" r="1.4" fill="#1C2A28" />
+    <circle cx="115.82" cy="145.38" r="1.4" fill="#1C2A28" />
+    <circle cx="121.85" cy="167.88" r="1.4" fill="#1C2A28" />
+    <circle cx="127.88" cy="190.39" r="1.4" fill="#1C2A28" />
+    <circle cx="105.00" cy="146.80" r="1.4" fill="#1C2A28" />
+    <circle cx="105.00" cy="193.40" r="1.4" fill="#1C2A28" />
+    <circle cx="94.18" cy="145.38" r="1.4" fill="#1C2A28" />
+    <circle cx="84.10" cy="141.20" r="1.4" fill="#1C2A28" />
+    <circle cx="75.44" cy="134.56" r="1.4" fill="#1C2A28" />
+    <circle cx="68.80" cy="125.90" r="1.4" fill="#1C2A28" />
+    <circle cx="28.44" cy="149.20" r="1.4" fill="#1C2A28" />
+    <circle cx="64.62" cy="115.82" r="1.4" fill="#1C2A28" />
+    <circle cx="42.12" cy="121.85" r="1.4" fill="#1C2A28" />
+    <circle cx="19.61" cy="127.88" r="1.4" fill="#1C2A28" />
+    <circle cx="63.20" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="16.60" cy="105.00" r="1.4" fill="#1C2A28" />
+    <circle cx="64.62" cy="94.18" r="1.4" fill="#1C2A28" />
+  </svg><div class="label-stack"><div class="species-jp">シジュウカラ</div><div class="species-en">PARUS MINOR</div><div class="species-note">早朝の合唱。昼には粒のように散る。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 05</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="130.47" y1="9.95" x2="131.24" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="35.42" x2="176.70" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="200.05" y1="79.53" x2="202.94" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="200.05" y1="130.47" x2="202.94" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="174.58" x2="176.70" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="130.47" y1="200.05" x2="131.24" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="79.53" y1="200.05" x2="78.76" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="174.58" x2="33.30" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="9.95" y1="130.47" x2="7.06" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="9.95" y1="79.53" x2="7.06" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="35.42" x2="33.30" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="79.53" y1="9.95" x2="78.76" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <line x1="141.51" y1="95.22" x2="146.79" y2="93.80" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="146.79" cy="93.80" r="2.22" fill="#B4593A" />
+    <line x1="142.80" y1="105.00" x2="159.18" y2="105.00" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="159.18" cy="105.00" r="2.66" fill="#B4593A" />
+    <line x1="141.51" y1="114.78" x2="173.16" y2="123.26" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="173.16" cy="123.26" r="3.32" fill="#B4593A" />
+    <line x1="137.74" y1="123.90" x2="177.93" y2="147.10" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="177.93" cy="147.10" r="3.87" fill="#B4593A" />
+    <line x1="131.73" y1="131.73" x2="158.75" y2="158.75" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="158.75" cy="158.75" r="3.54" fill="#B4593A" />
+    <line x1="123.90" y1="137.74" x2="138.92" y2="163.74" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="138.92" cy="163.74" r="3.21" fill="#B4593A" />
+    <line x1="114.78" y1="141.51" x2="119.73" y2="159.97" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="119.73" cy="159.97" r="2.77" fill="#B4593A" />
+    <line x1="105.00" y1="142.80" x2="105.00" y2="153.72" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="105.00" cy="153.72" r="2.44" fill="#B4593A" />
+    <line x1="95.22" y1="141.51" x2="92.39" y2="152.06" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="92.39" cy="152.06" r="2.44" fill="#B4593A" />
+    <line x1="86.10" y1="137.74" x2="77.91" y2="151.92" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="77.91" cy="151.92" r="2.66" fill="#B4593A" />
+    <line x1="78.27" y1="131.73" x2="66.69" y2="143.31" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="66.69" cy="143.31" r="2.66" fill="#B4593A" />
+    <line x1="72.26" y1="123.90" x2="62.81" y2="129.36" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="62.81" cy="129.36" r="2.44" fill="#B4593A" />
+    <line x1="68.49" y1="114.78" x2="63.21" y2="116.20" stroke="#B4593A" stroke-width="0.7" />
+    <circle cx="63.21" cy="116.20" r="2.22" fill="#B4593A" />
+  </svg><div class="label-stack"><div class="species-jp">メジロ</div><div class="species-en">ZOSTEROPS JAPONICUS</div><div class="species-note">朝の窓の外、午前の遅い時間に最も濃い。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 06</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <circle cx="105.00" cy="105.00" r="48.72" fill="none" stroke="#8E8B7E" stroke-width="0.5" stroke-dasharray="2 3" />
+    <circle cx="105.00" cy="105.00" r="67.83" fill="none" stroke="#8E8B7E" stroke-width="0.5" stroke-dasharray="2 3" />
+    <circle cx="105.00" cy="105.00" r="86.94" fill="none" stroke="#8E8B7E" stroke-width="0.5" stroke-dasharray="2 3" />
+    <path d="M 140.48 77.78 L 146.83 72.91 A 52.72 52.72 0 0 1 153.71 84.82 L 146.32 87.89 A 44.72 44.72 0 0 0 140.48 77.78 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 146.32 87.89 L 153.71 84.82 A 52.72 52.72 0 0 1 157.27 98.12 L 149.34 99.16 A 44.72 44.72 0 0 0 146.32 87.89 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 163.97 80.57 L 171.36 77.51 A 71.83 71.83 0 0 1 176.22 95.62 L 168.28 96.67 A 63.83 63.83 0 0 0 163.97 80.57 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 149.34 99.16 L 157.27 98.12 A 52.72 52.72 0 0 1 157.27 111.88 L 149.34 110.84 A 44.72 44.72 0 0 0 149.34 99.16 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 168.28 96.67 L 176.22 95.62 A 71.83 71.83 0 0 1 176.22 114.38 L 168.28 113.33 A 63.83 63.83 0 0 0 168.28 96.67 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 149.34 110.84 L 157.27 111.88 A 52.72 52.72 0 0 1 153.71 125.18 L 146.32 122.11 A 44.72 44.72 0 0 0 149.34 110.84 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 168.28 113.33 L 176.22 114.38 A 71.83 71.83 0 0 1 171.36 132.49 L 163.97 129.43 A 63.83 63.83 0 0 0 168.28 113.33 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 146.32 122.11 L 153.71 125.18 A 52.72 52.72 0 0 1 146.83 137.09 L 140.48 132.22 A 44.72 44.72 0 0 0 146.32 122.11 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 163.97 129.43 L 171.36 132.49 A 71.83 71.83 0 0 1 161.99 148.73 L 155.64 143.86 A 63.83 63.83 0 0 0 163.97 129.43 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 140.48 132.22 L 146.83 137.09 A 52.72 52.72 0 0 1 137.09 146.83 L 132.22 140.48 A 44.72 44.72 0 0 0 140.48 132.22 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 155.64 143.86 L 161.99 148.73 A 71.83 71.83 0 0 1 148.73 161.99 L 143.86 155.64 A 63.83 63.83 0 0 0 155.64 143.86 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 132.22 140.48 L 137.09 146.83 A 52.72 52.72 0 0 1 125.18 153.71 L 122.11 146.32 A 44.72 44.72 0 0 0 132.22 140.48 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 143.86 155.64 L 148.73 161.99 A 71.83 71.83 0 0 1 132.49 171.36 L 129.43 163.97 A 63.83 63.83 0 0 0 143.86 155.64 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 122.11 146.32 L 125.18 153.71 A 52.72 52.72 0 0 1 111.88 157.27 L 110.84 149.34 A 44.72 44.72 0 0 0 122.11 146.32 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 129.43 163.97 L 132.49 171.36 A 71.83 71.83 0 0 1 114.38 176.22 L 113.33 168.28 A 63.83 63.83 0 0 0 129.43 163.97 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 110.84 149.34 L 111.88 157.27 A 52.72 52.72 0 0 1 98.12 157.27 L 99.16 149.34 A 44.72 44.72 0 0 0 110.84 149.34 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 113.33 168.28 L 114.38 176.22 A 71.83 71.83 0 0 1 95.62 176.22 L 96.67 168.28 A 63.83 63.83 0 0 0 113.33 168.28 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 99.16 149.34 L 98.12 157.27 A 52.72 52.72 0 0 1 84.82 153.71 L 87.89 146.32 A 44.72 44.72 0 0 0 99.16 149.34 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 96.67 168.28 L 95.62 176.22 A 71.83 71.83 0 0 1 77.51 171.36 L 80.57 163.97 A 63.83 63.83 0 0 0 96.67 168.28 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 87.89 146.32 L 84.82 153.71 A 52.72 52.72 0 0 1 72.91 146.83 L 77.78 140.48 A 44.72 44.72 0 0 0 87.89 146.32 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 80.57 163.97 L 77.51 171.36 A 71.83 71.83 0 0 1 61.27 161.99 L 66.14 155.64 A 63.83 63.83 0 0 0 80.57 163.97 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 77.78 140.48 L 72.91 146.83 A 52.72 52.72 0 0 1 63.17 137.09 L 69.52 132.22 A 44.72 44.72 0 0 0 77.78 140.48 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 66.14 155.64 L 61.27 161.99 A 71.83 71.83 0 0 1 48.01 148.73 L 54.36 143.86 A 63.83 63.83 0 0 0 66.14 155.64 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 69.52 132.22 L 63.17 137.09 A 52.72 52.72 0 0 1 56.29 125.18 L 63.68 122.11 A 44.72 44.72 0 0 0 69.52 132.22 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 54.36 143.86 L 48.01 148.73 A 71.83 71.83 0 0 1 38.64 132.49 L 46.03 129.43 A 63.83 63.83 0 0 0 54.36 143.86 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 63.68 122.11 L 56.29 125.18 A 52.72 52.72 0 0 1 52.73 111.88 L 60.66 110.84 A 44.72 44.72 0 0 0 63.68 122.11 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 46.03 129.43 L 38.64 132.49 A 71.83 71.83 0 0 1 33.78 114.38 L 41.72 113.33 A 63.83 63.83 0 0 0 46.03 129.43 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 60.66 110.84 L 52.73 111.88 A 52.72 52.72 0 0 1 52.73 98.12 L 60.66 99.16 A 44.72 44.72 0 0 0 60.66 110.84 Z" fill="#1C2A28" fill-opacity="0.78" />
+    <path d="M 60.66 99.16 L 52.73 98.12 A 52.72 52.72 0 0 1 56.29 84.82 L 63.68 87.89 A 44.72 44.72 0 0 0 60.66 99.16 Z" fill="#1C2A28" fill-opacity="0.78" />
+  </svg><div class="label-stack"><div class="species-jp">キジバト</div><div class="species-en">STREPTOPELIA ORIENTALIS</div><div class="species-note">一日中、低く、おなじ調子で。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 07</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <line x1="133.14" y1="76.86" x2="135.59" y2="74.41" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="137.50" y1="82.03" x2="158.16" y2="67.43" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="139.47" y1="85.10" x2="161.38" y2="72.45" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="141.14" y1="88.34" x2="164.12" y2="77.75" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="142.34" y1="91.22" x2="189.13" y2="73.96" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="142.82" y1="92.60" x2="190.21" y2="77.07" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="143.25" y1="94.00" x2="191.17" y2="80.21" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="143.63" y1="95.41" x2="192.03" y2="83.38" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="143.95" y1="96.83" x2="192.76" y2="86.59" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.23" y1="98.26" x2="193.37" y2="89.81" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.63" y1="101.36" x2="188.86" y2="97.29" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.76" y1="103.18" x2="189.12" y2="101.14" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.80" y1="105.00" x2="189.21" y2="105.00" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.76" y1="106.82" x2="189.12" y2="108.86" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.63" y1="108.64" x2="188.86" y2="112.71" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="144.23" y1="111.74" x2="171.85" y2="116.49" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="143.44" y1="115.30" x2="170.52" y2="122.56" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="142.34" y1="118.78" x2="168.64" y2="128.48" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="141.14" y1="121.66" x2="151.72" y2="126.54" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="137.50" y1="127.97" x2="147.02" y2="134.69" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+    <line x1="133.14" y1="133.14" x2="135.59" y2="135.59" stroke="#1C2A28" stroke-width="0.9" stroke-linecap="round" />
+  </svg><div class="label-stack"><div class="species-jp">ウグイス</div><div class="species-en">HORORNIS DIPHONE</div><div class="species-note">夜明けに突然はじまり、午前のうちに消える。</div></div></div>
+    <div class="disc"><span class="disc-no">FIG. 08</span><svg viewBox="0 0 210 210" width="210" height="210" xmlns="http://www.w3.org/2000/svg">
+    <line x1="105.00" y1="6.60" x2="105.00" y2="-1.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="130.47" y1="9.95" x2="131.24" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="19.78" x2="155.70" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="35.42" x2="176.70" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="55.80" x2="192.81" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="200.05" y1="79.53" x2="202.94" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="203.40" y1="105.00" x2="211.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="200.05" y1="130.47" x2="202.94" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="190.22" y1="154.20" x2="192.81" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="174.58" y1="174.58" x2="176.70" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="154.20" y1="190.22" x2="155.70" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="130.47" y1="200.05" x2="131.24" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="105.00" y1="203.40" x2="105.00" y2="211.40" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="79.53" y1="200.05" x2="78.76" y2="202.94" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="190.22" x2="54.30" y2="192.81" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="174.58" x2="33.30" y2="176.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="154.20" x2="17.19" y2="155.70" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="9.95" y1="130.47" x2="7.06" y2="131.24" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="6.60" y1="105.00" x2="-1.40" y2="105.00" stroke="#8E8B7E" stroke-width="1.2" />
+    <line x1="9.95" y1="79.53" x2="7.06" y2="78.76" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="19.78" y1="55.80" x2="17.19" y2="54.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="35.42" y1="35.42" x2="33.30" y2="33.30" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="55.80" y1="19.78" x2="54.30" y2="17.19" stroke="#8E8B7E" stroke-width="0.6" />
+    <line x1="79.53" y1="9.95" x2="78.76" y2="7.06" stroke="#8E8B7E" stroke-width="0.6" />
+    <text x="105.00" y="-13.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">00</text>
+    <text x="223.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">06</text>
+    <text x="105.00" y="223.40" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">12</text>
+    <text x="-13.40" y="105.00" font-family="IBM Plex Mono" font-size="8.5" fill="#8E8B7E" text-anchor="middle" dominant-baseline="middle" letter-spacing="0.08em">18</text>
+    <circle cx="105.00" cy="105.00" r="1.5" fill="#1C2A28" />
+    <path d="M 134.99 81.99 L 143.65 75.34 A 48.72 48.72 0 0 1 150.01 86.36 L 139.92 90.53 A 37.80 37.80 0 0 0 134.99 81.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 90.53 L 167.67 79.04 A 67.83 67.83 0 0 1 172.25 96.15 L 142.48 100.07 A 37.80 37.80 0 0 0 139.92 90.53 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 100.07 L 177.66 95.43 A 73.29 73.29 0 0 1 177.66 114.57 L 142.48 109.93 A 37.80 37.80 0 0 0 142.48 100.07 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 142.48 109.93 L 169.54 113.50 A 65.10 65.10 0 0 1 165.14 129.91 L 139.92 119.47 A 37.80 37.80 0 0 0 142.48 109.93 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 139.92 119.47 L 155.06 125.73 A 54.18 54.18 0 0 1 147.98 137.98 L 134.99 128.01 A 37.80 37.80 0 0 0 139.92 119.47 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 134.99 128.01 L 143.65 134.66 A 48.72 48.72 0 0 1 134.66 143.65 L 128.01 134.99 A 37.80 37.80 0 0 0 134.99 128.01 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 128.01 134.99 L 134.66 143.65 A 48.72 48.72 0 0 1 123.64 150.01 L 119.47 139.92 A 37.80 37.80 0 0 0 128.01 134.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 119.47 139.92 L 123.64 150.01 A 48.72 48.72 0 0 1 111.36 153.30 L 109.93 142.48 A 37.80 37.80 0 0 0 119.47 139.92 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 109.93 142.48 L 112.07 158.72 A 54.18 54.18 0 0 1 97.93 158.72 L 100.07 142.48 A 37.80 37.80 0 0 0 109.93 142.48 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 100.07 142.48 L 97.22 164.13 A 59.64 59.64 0 0 1 82.18 160.10 L 90.53 139.92 A 37.80 37.80 0 0 0 100.07 142.48 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 90.53 139.92 L 81.13 162.62 A 62.37 62.37 0 0 1 67.03 154.48 L 81.99 134.99 A 37.80 37.80 0 0 0 90.53 139.92 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 81.99 134.99 L 63.71 158.81 A 67.83 67.83 0 0 1 51.19 146.29 L 75.01 128.01 A 37.80 37.80 0 0 0 81.99 134.99 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 75.01 128.01 L 46.86 149.62 A 73.29 73.29 0 0 1 37.29 133.05 L 70.08 119.47 A 37.80 37.80 0 0 0 75.01 128.01 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 119.47 L 32.24 135.14 A 78.75 78.75 0 0 1 26.92 115.28 L 67.52 109.93 A 37.80 37.80 0 0 0 70.08 119.47 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 109.93 L 21.51 115.99 A 84.21 84.21 0 0 1 21.51 94.01 L 67.52 100.07 A 37.80 37.80 0 0 0 67.52 109.93 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 67.52 100.07 L 40.46 96.50 A 65.10 65.10 0 0 1 44.86 80.09 L 70.08 90.53 A 37.80 37.80 0 0 0 67.52 100.07 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+    <path d="M 70.08 90.53 L 65.03 88.45 A 43.26 43.26 0 0 1 70.68 78.66 L 75.01 81.99 A 37.80 37.80 0 0 0 70.08 90.53 Z" fill="#B4593A" fill-opacity="0.85" stroke="#E8E6DD" stroke-width="0.6" />
+  </svg><div class="label-stack"><div class="species-jp">ツバメ</div><div class="species-en">HIRUNDO RUSTICA</div><div class="species-note">薄明の二度。空気の透ける時間に鳴く。</div></div></div>
+  </div>
+
+  <div class="method">
+    <div class="marker">METHOD</div>
+    <div class="method-text">
+      ある一日、夜明け前から日暮れまでの間、8 種の鳴き声を確認時刻ごとに記録した架空の観測。
+      半径は時間内に確認された鳴き声の量、種ごとに表記様式(塗り / 線 / 点群 / 茎 / 同心三層 / 放射ハッチ)を変えている。
+      一日を時計の文字盤に巻き戻したとき、どの種がどの時刻で鳴いているかが版面そのものに残るように設計した。
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>FICTIONAL DATASET &middot; CREATIVEVAULT 70_DESIGN_EXPERIMENTS &middot; 2026</span>
+    <span>都市鳥類観測ノート &middot; 観測者不詳</span>
+  </footer>
+</body>
+</html>

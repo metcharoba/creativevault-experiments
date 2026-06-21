@@ -15,3 +15,10 @@ Thumbs.db
 # Env (defensive — none currently present)
 .env
 .env.*
+
+# RFM reference screenshots: fair-use observation only, NOT redistributed
+**/screenshots/refs/
+
+# R session history (created automatically by R; not source)
+.Rhistory
+**/.Rhistory
