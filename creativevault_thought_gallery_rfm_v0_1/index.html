@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CreativeVault — Personal Thought Gallery</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+    }
+  }
+  </script>
   <style>
     @font-face {
       font-family: "Bricolage";
@@ -194,23 +202,10 @@
       background: var(--off);
     }
 
-    .hero-image img {
+    #hero-canvas {
+      display: block;
       width: 100%;
       height: 100%;
-      display: block;
-      object-fit: cover;
-      object-position: 18% 18%;
-      filter: saturate(1.08) contrast(1.03);
-    }
-
-    .hero-image::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, rgba(0, 0, 0, 0.10), transparent 38%),
-        linear-gradient(180deg, transparent 65%, rgba(0, 0, 0, 0.08));
-      pointer-events: none;
     }
 
     .exhibit-label {
@@ -247,6 +242,12 @@
       font-size: 11px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+
+    .exhibit-label small a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     .statement {
@@ -696,10 +697,6 @@
         width: min(100vw, 390px);
       }
 
-      .hero-image img {
-        object-position: 24% 12%;
-      }
-
       .exhibit-label {
         left: 16px;
         width: calc(100% - 32px);
@@ -1003,11 +1000,11 @@
 
   <main>
     <section id="hero" class="hero-image" aria-label="Featured exhibit">
-      <img src="assets/images/staatliches-bauhaus-titelseite.jpg" alt="Public domain Bauhaus title page with bold red and black typography">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
       <div class="exhibit-label">
         <span>Now on View</span>
         <b>CreativeVault: Personal Thought Gallery</b>
-        <small>Hero image: Staatliches Bauhaus 1923 — Public Domain, Wikimedia Commons</small>
+        <small><a href="https://sketchfab.com/3d-models/armillary-sphere-1771-41e23659c75241459eec6477d9e77c93" target="_blank" rel="noopener">Armillary sphere (1771)</a> — <a href="https://sketchfab.com/WirtualneMuzeaMalopolski" target="_blank" rel="noopener">Virtual Museums of Małopolska</a>, <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></small>
       </div>
     </section>
 
@@ -1167,5 +1164,6 @@
       });
     })();
   </script>
+  <script type="module" src="assets/js/hero-3d.js"></script>
 </body>
 </html>

@@ -17,13 +17,22 @@
 - Warm gray: `#efefed`
 - Utility gray: `#767676`
 
-## Hero material
+## Hero material (v1 — superseded 2026-07-01)
 - Type: external public-domain image + self-authored layout.
 - Source + URL: Wikimedia Commons, `File:StaatlichesBauhausTitelseite.jpg` — https://commons.wikimedia.org/wiki/File:StaatlichesBauhausTitelseite.jpg
-- Asset path: `assets/images/staatliches-bauhaus-titelseite.jpg`
+- Asset path: `assets/images/staatliches-bauhaus-titelseite.jpg` (file kept, no longer referenced by hero)
 - Image description: 1923 title page for Staatliches Bauhaus in Weimar 1919-1923, designed by László Moholy-Nagy.
 - License: Public Domain Mark 1.0 / public domain per Wikimedia Commons file page.
-- Notes: The image is used as the hero's large cropped typographic artifact. The surrounding header, black exhibit label, Japanese hero message, seal, and preview section are self-authored for this build while structurally referencing Letterform Archive.
+- Notes: Used as the hero's large cropped typographic artifact until replaced by the 3D hero below.
+
+## Hero material (v2 — current, 2026-07-01)
+- Type: real 3D scan (GLB), rendered live in-browser via Three.js, replacing the static hero image.
+- Source + URL: Sketchfab, "Armillary sphere (1771)" — https://sketchfab.com/3d-models/armillary-sphere-1771-41e23659c75241459eec6477d9e77c93
+- Author: Virtual Museums of Małopolska — https://sketchfab.com/WirtualneMuzeaMalopolski (digitization of an object held by the Jagiellonian University Museum, Collegium Maius, Kraków)
+- Asset path: `assets/models/armillary-sphere-1771.glb` (compressed from the original 64MB glTF download to 1.82MB via `@gltf-transform/cli optimize --texture-size 1024 --texture-compress webp`, meshopt geometry compression). Original license file kept at `assets/models/armillary-sphere-1771-LICENSE.txt`.
+- License: CC BY 4.0 (http://creativecommons.org/licenses/by/4.0/) — attribution required, commercial use allowed. Required credit reproduced verbatim in `.exhibit-label small` on the page, plus this note.
+- Rendering: `assets/js/hero-3d.js`, vanilla Three.js (CDN import map, no bundler) loaded as `<script type="module">`. On load, the model's real vertex positions are captured and each vertex is displaced along a random direction/magnitude ("scattered"), then eased back to its true position over ~2.2s (`easeOutBack`), after which it settles into a slow continuous auto-rotate. Positions used are always the object's real scanned geometry — the assembly animation is a deterministic display of real data, not AI-generated. Respects `prefers-reduced-motion` (skips scatter + auto-rotate, renders once at rest) and pauses the idle rotate loop via `IntersectionObserver` when the hero scrolls out of view.
+- Notes: Chosen over an AI image→3D pipeline (Higgsfield `generate_3d`) after concluding that route was too likely to fail for this content; chosen over a plain AI-generated video assembly (Higgsfield `generate_video`) because precise multi-part convergence is a known weak point of video diffusion models. Verified locally via a temporary `python3 -m http.server` + Playwright/CDP screenshot check (desktop + mobile viewports, no console errors) before shipping.
 
 ## Supporting Image Material
 
